@@ -1,6 +1,7 @@
 package pepse.world;
 
 import danogl.collisions.GameObjectCollection;
+import danogl.collisions.Layer;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
@@ -56,18 +57,18 @@ public class Terrain {
                     windowDimensions.y() - Block.SIZE);
 
             for (int i = 0; i < TERRAIN_DEPTH; i++) {
-                this.createBlock(x, height + (i * Block.SIZE));
+                this.createBlock(x, height + (i * Block.SIZE), i);
             }
         }
     }
 
-    private void createBlock(float x, float y) {
+    private void createBlock(float x, float y, int index) {
         RectangleRenderable renderableBlock = new RectangleRenderable(
                 ColorSupplier.approximateColor(BASE_GROUND_COLOR));
 
         Block newBlock = new Block(new Vector2(x, y), renderableBlock);
         newBlock.setTag("ground");
 
-        this.gameObjects.addGameObject(newBlock, groundLayer);
+        this.gameObjects.addGameObject(newBlock, index <= 1 ? this.groundLayer : Layer.BACKGROUND);
     }
 }

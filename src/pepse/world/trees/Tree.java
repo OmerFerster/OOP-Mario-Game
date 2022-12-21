@@ -8,14 +8,14 @@ import java.util.Random;
 
 public class Tree {
 
-    private static final int LEAFS_GRID_SIZE = 7;
+    private static final Random random = new Random();
+    private static final int LEAFS_GRID_SIZE = 4;
 
     private final GameObjectCollection gameObjects;
     private final Vector2 windowDimensions;
     private final int layer;
 
     private final Callback callback;
-    private final Random random = new Random();
 
     public Tree(GameObjectCollection gameObjects, int layer, Vector2 windowDimensions,
                 Callback callback) {
@@ -31,7 +31,7 @@ public class Tree {
         maxX = (maxX >= 0 ? maxX : maxX - (Block.SIZE + (maxX % Block.SIZE)));
 
         for (int x = minX; x < maxX; x += Block.SIZE) {
-            int chances = this.random.nextInt(10);
+            int chances = random.nextInt(15);
 
             if (chances == 0) {
                 this.createTree(x);
