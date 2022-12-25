@@ -1,7 +1,6 @@
 package pepse.world;
 
 import danogl.collisions.GameObjectCollection;
-import danogl.collisions.Layer;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
@@ -47,8 +46,8 @@ public class Terrain {
     }
 
     public void createInRange(int minX, int maxX) {
-        minX = (minX >= 0 ? minX : minX - (Block.SIZE + (minX % Block.SIZE)));
-        maxX = (maxX >= 0 ? maxX : maxX - (Block.SIZE + (maxX % Block.SIZE)));
+        minX = (minX >= 0 ? minX + (minX % Block.SIZE) : minX - (Block.SIZE + (minX % Block.SIZE)));
+        maxX = (maxX >= 0 ? maxX + (maxX % Block.SIZE) : maxX - (Block.SIZE + (maxX % Block.SIZE)));
 
         for (float x = minX; x < maxX; x += Block.SIZE) {
             float height = this.groundHeightAt(x);
@@ -57,18 +56,18 @@ public class Terrain {
                     windowDimensions.y() - Block.SIZE);
 
             for (int i = 0; i < TERRAIN_DEPTH; i++) {
-                this.createBlock(x, height + (i * Block.SIZE), i);
+                this.createBlock(x, height + (i * Block.SIZE));
             }
         }
     }
 
-    private void createBlock(float x, float y, int index) {
+    private void createBlock(float x, float y) {
         RectangleRenderable renderableBlock = new RectangleRenderable(
                 ColorSupplier.approximateColor(BASE_GROUND_COLOR));
 
         Block newBlock = new Block(new Vector2(x, y), renderableBlock);
         newBlock.setTag("ground");
 
-        this.gameObjects.addGameObject(newBlock, index <= 1 ? this.groundLayer : Layer.BACKGROUND);
+        this.gameObjects.addGameObject(newBlock, this.groundLayer);
     }
 }

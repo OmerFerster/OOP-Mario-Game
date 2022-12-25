@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
 
 public class Avatar {
 
-    private static final int AVATAR_MOVE_SPEED = 200;
+    private static final int AVATAR_MOVE_SPEED = 300;
 
 //    private final UserInputListener inputListener;
 
@@ -53,6 +53,7 @@ public class Avatar {
         GameObject avatar = new GameObject(topLeftCorner, new Vector2(30, 30), render);
 
         avatar.physics().preventIntersectionsFromDirection(Vector2.ZERO);
+        avatar.physics().setMass(100000);
         avatar.transform().setAccelerationY(500);
 
         avatar.addComponent((deltaTime) -> inputController(avatar, inputListener));

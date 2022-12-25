@@ -25,6 +25,11 @@ public class PepseGameManager extends GameManager {
 
     private Vector2 windowDimensions;
 
+    public PepseGameManager() {
+        // TODO might need to remove
+        super("Pepse", new Vector2(1920, 1080));
+    }
+
     @Override
     public void run() {
         super.run();
@@ -40,36 +45,36 @@ public class PepseGameManager extends GameManager {
         this.createBackground();
         this.createTerrain();
 
-        this.initLayerCollisions();
-
         this.initAvatar(inputListener, imageReader);
+
+        this.initLayerCollisions();
     }
 
     private void createBackground() {
-        Sky.create(gameObjects(), this.windowDimensions, Layer.BACKGROUND);
+        Sky.create(this.gameObjects(), this.windowDimensions, Layer.BACKGROUND);
 
-        Night.create(gameObjects(), Layer.FOREGROUND, windowDimensions, 30.0f);
+        Night.create(this.gameObjects(), Layer.FOREGROUND, windowDimensions, 30.0f);
 
-        GameObject sun = Sun.create(gameObjects(), Layer.BACKGROUND, windowDimensions, 30.0f);
-        SunHalo.create(gameObjects(), Layer.BACKGROUND, sun, new Color(255, 255, 0, 20));
+        GameObject sun = Sun.create(this.gameObjects(), Layer.BACKGROUND, windowDimensions, 30.0f);
+        SunHalo.create(this.gameObjects(), Layer.BACKGROUND, sun, new Color(255, 255, 0, 20));
     }
 
     private void createTerrain() {
-        Terrain terrain = new Terrain(gameObjects(), TERRAIN_LAYER, windowDimensions, 78);
+        Terrain terrain = new Terrain(this.gameObjects(), TERRAIN_LAYER, windowDimensions, 30);
         terrain.createInRange(0, (int) windowDimensions.x());
 
-        Tree tree = new Tree(gameObjects(), LEAVES_LAYER, windowDimensions, terrain::groundHeightAt);
+        Tree tree = new Tree(this.gameObjects(), LEAVES_LAYER, windowDimensions, terrain::groundHeightAt);
         tree.createInRange(0, (int) windowDimensions.x());
     }
 
     private void initLayerCollisions() {
         // Making leaves collide with terrain
-        gameObjects().layers().shouldLayersCollide(LEAVES_LAYER, TERRAIN_LAYER, true);
-        gameObjects().layers().shouldLayersCollide(Layer.DEFAULT, TERRAIN_LAYER, true);
+        this.gameObjects().layers().shouldLayersCollide(LEAVES_LAYER, TERRAIN_LAYER, true);
+        this.gameObjects().layers().shouldLayersCollide(Layer.DEFAULT, TERRAIN_LAYER, true);
     }
 
     private void initAvatar(UserInputListener userInputListener, ImageReader imageReader) {
-        Avatar.create(gameObjects(), Layer.DEFAULT,
+        Avatar.create(this.gameObjects(), Layer.DEFAULT,
                 windowDimensions.mult(0.5f), userInputListener, imageReader);
     }
 
