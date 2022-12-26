@@ -3,10 +3,12 @@ package pepse;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
+import danogl.components.CoordinateSpace;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
+import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
 import pepse.world.Avatar;
 import pepse.world.Sky;
@@ -24,6 +26,7 @@ public class PepseGameManager extends GameManager {
     private static final int LEAVES_LAYER = Layer.FOREGROUND;
 
     private Vector2 windowDimensions;
+    private WindowController windowController;
 
     public PepseGameManager() {
         // TODO might need to remove
@@ -41,6 +44,7 @@ public class PepseGameManager extends GameManager {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
 
         this.windowDimensions = windowController.getWindowDimensions();
+        this.windowController = windowController;
 
         this.createBackground();
         this.createTerrain();
@@ -74,8 +78,14 @@ public class PepseGameManager extends GameManager {
     }
 
     private void initAvatar(UserInputListener userInputListener, ImageReader imageReader) {
-        Avatar.create(this.gameObjects(), Layer.DEFAULT,
+        GameObject avatar = Avatar.create(this.gameObjects(), Layer.DEFAULT,
                 windowDimensions.mult(0.5f), userInputListener, imageReader);
+
+        // Setting the camera to track the avatar
+        this.setCamera(new Camera(avatar, Vector2.ZERO,
+                this.windowController.getWindowDimensions(),
+                this.windowController.getWindowDimensions()));
+
     }
 
 
