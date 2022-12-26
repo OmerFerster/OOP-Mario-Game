@@ -53,7 +53,6 @@ public class Avatar {
         GameObject avatar = new GameObject(topLeftCorner, new Vector2(30, 30), render);
 
         avatar.physics().preventIntersectionsFromDirection(Vector2.ZERO);
-        avatar.physics().setMass(100000);
         avatar.transform().setAccelerationY(500);
 
         avatar.addComponent((deltaTime) -> inputController(avatar, inputListener));
