@@ -9,7 +9,7 @@ import java.util.Random;
 public class Tree {
 
     private static final Random random = new Random();
-    private static final int LEAFS_GRID_SIZE = 4;
+    private static final int LEAFS_GRID_SIZE = 0;
 
     private final GameObjectCollection gameObjects;
     private final Vector2 windowDimensions;
@@ -64,7 +64,9 @@ public class Tree {
         for (int i = startX; i < endX; i += Block.SIZE) {
             for (int j = startY; j < endY; j += Block.SIZE) {
                 Leaf leaf = new Leaf(new Vector2(i, j));
+
                 leaf.setTag("leaf");
+
                 this.gameObjects.addGameObject(leaf, this.layer);
             }
         }
@@ -73,7 +75,9 @@ public class Tree {
     private void createLog(float xLocation, float height, int treeHeight) {
         for (int i = 0; i < treeHeight; i++) {
             Log log = new Log(new Vector2(xLocation, height - ((i + 1) * Block.SIZE)));
+
             log.setTag("log");
+
             this.gameObjects.addGameObject(log, this.layer);
         }
     }

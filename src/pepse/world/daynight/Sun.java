@@ -39,15 +39,10 @@ public class Sun {
 
         new Transition<>(
                 sun,
-                (degree) -> {
-                    Vector2 vec = new Vector2(screenMidX, screenMidY + SUN_ORBIT_Y_MARGIN);
-
-                    vec = vec.add(new Vector2(
-                            SUN_ORBIT_ELLIPSE_A * (float) Math.cos(-degree),
-                            SUN_ORBIT_ELLIPSE_B * (float) Math.sin(-degree)
-                            ).mult(SUN_ORBIT_RADIUS));
-                    sun.setCenter(vec);
-                },
+                (degree) -> sun.setCenter(new Vector2(
+                        (float) Math.cos(-degree) * SUN_ORBIT_RADIUS * SUN_ORBIT_ELLIPSE_A + screenMidX,
+                        (float) Math.sin(-degree) * SUN_ORBIT_RADIUS * SUN_ORBIT_ELLIPSE_B + screenMidY
+                )),
                 (float) Math.PI / 2,
                 (float) (2.5 * Math.PI),
                 Transition.LINEAR_INTERPOLATOR_FLOAT,

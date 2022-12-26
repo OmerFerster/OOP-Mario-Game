@@ -22,16 +22,15 @@ import java.awt.*;
 
 public class PepseGameManager extends GameManager {
 
-    private static final int TERRAIN_LAYER = Layer.STATIC_OBJECTS;
-    private static final int LEAVES_LAYER = Layer.FOREGROUND;
+    private static final int SUN_LAYER = Layer.BACKGROUND + 1;
+    private static final int SUN_HALO_LAYER = SUN_LAYER + 1;
+
+    private static final int COLLIDABLE_TERRAIN_LAYER = Layer.STATIC_OBJECTS;
+    private static final int TERRAIN_LAYER = COLLIDABLE_TERRAIN_LAYER- 1;
+    private static final int TREES_LAYER = Layer.FOREGROUND;
 
     private Vector2 windowDimensions;
     private WindowController windowController;
-
-    public PepseGameManager() {
-        // TODO might need to remove
-        super("Pepse", new Vector2(1920, 1080));
-    }
 
     @Override
     public void run() {
@@ -59,22 +58,32 @@ public class PepseGameManager extends GameManager {
 
         Night.create(this.gameObjects(), Layer.FOREGROUND, windowDimensions, 30.0f);
 
-        GameObject sun = Sun.create(this.gameObjects(), Layer.BACKGROUND, windowDimensions, 30.0f);
-        SunHalo.create(this.gameObjects(), Layer.BACKGROUND, sun, new Color(255, 255, 0, 20));
+        GameObject sun = Sun.create(this.gameObjects(), SUN_LAYER, windowDimensions, 30.0f);
+        SunHalo.create(this.gameObjects(), SUN_HALO_LAYER, sun, new Color(255, 255, 0, 20));
     }
 
     private void createTerrain() {
-        Terrain terrain = new Terrain(this.gameObjects(), TERRAIN_LAYER, windowDimensions, 30);
+        Terrain terrain = new Terrain(this.gameObjects(), COLLIDABLE_TERRAIN_LAYER,
+                TERRAIN_LAYER, windowDimensions, 30);
         terrain.createInRange(0, (int) windowDimensions.x());
 
-        Tree tree = new Tree(this.gameObjects(), LEAVES_LAYER, windowDimensions, terrain::groundHeightAt);
+        Tree tree = new Tree(this.gameObjects(), TREES_LAYER, windowDimensions, terrain::groundHeightAt);
         tree.createInRange(0, (int) windowDimensions.x());
     }
 
     private void initLayerCollisions() {
-        // Making leaves collide with terrain
-        this.gameObjects().layers().shouldLayersCollide(LEAVES_LAYER, TERRAIN_LAYER, true);
-        this.gameObjects().layers().shouldLayersCollide(Layer.DEFAULT, TERRAIN_LAYER, true);
+        // Making trees collide with terrain
+        this.gameObjects().layers().shouldLayersCollide(TREES_LAYER,
+                COLLIDABLE_TERRAIN_LAYER, true);
+
+        // Making default objects (player) collide with terrain
+        this.gameObjects().layers().shouldLayersCollide(Layer.DEFAULT,
+                COLLIDABLE_TERRAIN_LAYER, true);
+
+        this.gameObjects().layers().shouldLayersCollide(Layer.DEFAULT,
+                TREES_LAYER, true);
+
+        // Making default objects (player)
     }
 
     private void initAvatar(UserInputListener userInputListener, ImageReader imageReader) {
@@ -91,5 +100,6 @@ public class PepseGameManager extends GameManager {
 
     public static void main(String[] args) {
         new PepseGameManager().run();
+
     }
 }
