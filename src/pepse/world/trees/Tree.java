@@ -10,18 +10,18 @@ public class Tree {
 
     private static final Random random = new Random();
     private static final int LEAFS_GRID_SIZE = 4;
+    private static final String LEAF = "leaf";
+    private static final String LOG = "log";
 
     private final GameObjectCollection gameObjects;
     private final Vector2 windowDimensions;
     private final int layer;
-
     private final Callback callback;
 
     public Tree(GameObjectCollection gameObjects, int layer, Vector2 windowDimensions,
                 Callback callback) {
         this.gameObjects = gameObjects;
         this.layer = layer;
-
         this.windowDimensions = windowDimensions;
         this.callback = callback;
     }
@@ -32,16 +32,14 @@ public class Tree {
 
         for (int x = minX; x < maxX; x += Block.SIZE) {
             int chances = random.nextInt(15);
-
             if (chances == 0) {
                 this.createTree(x);
-
                 x += 30; // Increasing x by another 30 so there can't be 2 trees next to each other
             }
         }
     }
 
-    private void createTree(int xLocation) {
+    private void createTree(float xLocation) {
         float baseY = this.callback.run(xLocation);
 
         baseY = (float) Math.min(
@@ -49,10 +47,13 @@ public class Tree {
                 windowDimensions.y() - Block.SIZE);
 
         int treeHeight = random.nextInt(6) + 5;
-
         this.createLog(xLocation, baseY, treeHeight);
         this.createLeaf(xLocation, baseY, treeHeight);
+    }
 
+    @FunctionalInterface
+    public interface Callback {
+        float run(float x);
     }
 
     private void createLeaf(float xLocation, float height, int treeHeight) {
@@ -64,7 +65,7 @@ public class Tree {
         for (int i = startX; i < endX; i += Block.SIZE) {
             for (int j = startY; j < endY; j += Block.SIZE) {
                 Leaf leaf = new Leaf(new Vector2(i, j));
-                leaf.setTag("leaf");
+                leaf.setTag(LEAF);
                 this.gameObjects.addGameObject(leaf, this.layer);
             }
         }
@@ -73,13 +74,9 @@ public class Tree {
     private void createLog(float xLocation, float height, int treeHeight) {
         for (int i = 0; i < treeHeight; i++) {
             Log log = new Log(new Vector2(xLocation, height - ((i + 1) * Block.SIZE)));
-            log.setTag("log");
+            log.setTag(LOG);
             this.gameObjects.addGameObject(log, this.layer);
         }
     }
 
-    @FunctionalInterface
-    public interface Callback {
-        float run(float x);
-    }
 }

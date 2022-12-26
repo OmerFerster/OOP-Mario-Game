@@ -16,7 +16,6 @@ public class Leaf extends Block {
 
     private static final Random random = new Random();
     private static final Color LEAF_COLOR = new Color(50, 150, 50);
-
     private static final int FADE_LENGTH = 5;
     private static final float LEAF_MASS = 1.0f;
     private static final float LEAF_X_VELOCITY = 30;
@@ -27,16 +26,13 @@ public class Leaf extends Block {
 
     public Leaf(Vector2 topLeftCorner) {
         super(topLeftCorner, new RectangleRenderable(ColorSupplier.approximateColor(LEAF_COLOR)));
-
         this.initialPosition = topLeftCorner;
 
         // Setting the leaf mass, so it doesn't push "heavier" objects
         physics().setMass(LEAF_MASS);
 
         float randomTime = (((float) random.nextInt(10) + 1) / 10);
-
         new ScheduledTask(this, randomTime, false, this::initLeafTransitions);
-
         randomTime = random.nextInt(5);
         new ScheduledTask(this, randomTime, false, this::startLeafAnimation);
     }
@@ -87,9 +83,7 @@ public class Leaf extends Block {
                 null);
 
         this.transform().setVelocityY(LEAF_Y_VELOCITY);
-
         int randomDeathTime = random.nextInt(9) + 2;
-
         this.renderer().fadeOut(FADE_LENGTH, () ->
                 new ScheduledTask(this,
                         randomDeathTime, false, this::startLeafAnimation));
@@ -108,7 +102,6 @@ public class Leaf extends Block {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-
         this.removeComponent(this.fallingTransition);
     }
 
@@ -126,9 +119,9 @@ public class Leaf extends Block {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-
         if (this.transform().getVelocity().y() == 0) {
             this.transform().setVelocity(Vector2.ZERO);
         }
     }
+
 }

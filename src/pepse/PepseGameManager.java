@@ -22,6 +22,7 @@ public class PepseGameManager extends GameManager {
 
     private static final int TERRAIN_LAYER = Layer.STATIC_OBJECTS;
     private static final int LEAVES_LAYER = Layer.FOREGROUND;
+    private static final int SEED_VALUE = 78;
 
     private Vector2 windowDimensions;
 
@@ -36,28 +37,22 @@ public class PepseGameManager extends GameManager {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
 
         this.windowDimensions = windowController.getWindowDimensions();
-
         this.createBackground();
         this.createTerrain();
-
         this.initLayerCollisions();
-
         this.initAvatar(inputListener, imageReader);
     }
 
     private void createBackground() {
         Sky.create(gameObjects(), this.windowDimensions, Layer.BACKGROUND);
-
         Night.create(gameObjects(), Layer.FOREGROUND, windowDimensions, 30.0f);
-
         GameObject sun = Sun.create(gameObjects(), Layer.BACKGROUND, windowDimensions, 30.0f);
         SunHalo.create(gameObjects(), Layer.BACKGROUND, sun, new Color(255, 255, 0, 20));
     }
 
     private void createTerrain() {
-        Terrain terrain = new Terrain(gameObjects(), TERRAIN_LAYER, windowDimensions, 78);
+        Terrain terrain = new Terrain(gameObjects(), TERRAIN_LAYER, windowDimensions, SEED_VALUE);
         terrain.createInRange(0, (int) windowDimensions.x());
-
         Tree tree = new Tree(gameObjects(), LEAVES_LAYER, windowDimensions, terrain::groundHeightAt);
         tree.createInRange(0, (int) windowDimensions.x());
     }
@@ -65,6 +60,7 @@ public class PepseGameManager extends GameManager {
     private void initLayerCollisions() {
         // Making leaves collide with terrain
         gameObjects().layers().shouldLayersCollide(LEAVES_LAYER, TERRAIN_LAYER, true);
+        // Making avatar collide with terrain
         gameObjects().layers().shouldLayersCollide(Layer.DEFAULT, TERRAIN_LAYER, true);
     }
 
@@ -73,8 +69,8 @@ public class PepseGameManager extends GameManager {
                 windowDimensions.mult(0.5f), userInputListener, imageReader);
     }
 
-
     public static void main(String[] args) {
         new PepseGameManager().run();
     }
+
 }

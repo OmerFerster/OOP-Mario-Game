@@ -13,7 +13,8 @@ import java.awt.event.KeyEvent;
 
 public class Avatar {
 
-    private static final int AVATAR_MOVE_SPEED = 200;
+    private static final int AVATAR_MOVE_SPEED = 300;
+    private static final String AVATAR = "avatar";
 
 //    private final UserInputListener inputListener;
 
@@ -49,33 +50,27 @@ public class Avatar {
                                     UserInputListener inputListener,
                                     ImageReader imageReader) {
         Renderable render = new RectangleRenderable(Color.BLACK);
-
         GameObject avatar = new GameObject(topLeftCorner, new Vector2(30, 30), render);
 
         avatar.physics().preventIntersectionsFromDirection(Vector2.ZERO);
+        avatar.physics().setMass(1.0f);  // todo check
         avatar.transform().setAccelerationY(500);
-
         avatar.addComponent((deltaTime) -> inputController(avatar, inputListener));
         avatar.addComponent((deltaTime) -> jumpController(avatar, inputListener));
 
-        avatar.setTag("avatar");
-
+        avatar.setTag(AVATAR);
         gameObjects.addGameObject(avatar, layer);
-
         return avatar;
     }
 
     private static void inputController(GameObject avatar, UserInputListener inputListener) {
         Vector2 direction = new Vector2(0, avatar.getVelocity().y());
-
         if (inputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
             direction = direction.add(Vector2.LEFT.mult(AVATAR_MOVE_SPEED));
         }
-
         if (inputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
             direction = direction.add(Vector2.RIGHT.mult(AVATAR_MOVE_SPEED));
         }
-
         avatar.setVelocity(direction);
     }
 
@@ -84,4 +79,5 @@ public class Avatar {
             avatar.setVelocity(new Vector2(avatar.getVelocity().x(), -1 * AVATAR_MOVE_SPEED));
         }
     }
+
 }

@@ -10,18 +10,17 @@ import java.awt.*;
 public class SunHalo {
 
     private final static float HALO_DIMENSIONS_MULTIPLIER = 1.5f;
+    private final static String SUN_HALO = "sunHalo";
 
     public static GameObject create(GameObjectCollection gameObjects, int layer,
                                     GameObject sun, Color color) {
-        OvalRenderable sunHaloRender = new OvalRenderable(color);
 
+        OvalRenderable sunHaloRender = new OvalRenderable(color);
         GameObject sunHalo = new GameObject(sun.getTopLeftCorner(),
                 sun.getDimensions().mult(HALO_DIMENSIONS_MULTIPLIER), sunHaloRender);
-
         sunHalo.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-        sunHalo.addComponent((deltaTime -> sunHalo.setCenter(sun.getCenter())));
-        sunHalo.setTag("sunHalo");
-
+        sunHalo.addComponent(deltaTime -> sunHalo.setCenter(sun.getCenter()));
+        sunHalo.setTag(SUN_HALO);
         gameObjects.addGameObject(sunHalo, layer);
 
         return sunHalo;
