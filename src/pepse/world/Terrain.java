@@ -1,5 +1,6 @@
 package pepse.world;
 
+import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
@@ -7,6 +8,8 @@ import pepse.util.ColorSupplier;
 import pepse.util.NoiseGenerator;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Terrain {
 
@@ -37,7 +40,7 @@ public class Terrain {
         this.groundLayer = groundLayer;
 
         this.noiseGenerator = new NoiseGenerator(seed);
-        this.groundHeightAtX0 = ((float) 2/3) * windowDimensions.y();
+        this.groundHeightAtX0 = ((float) 2 / 3) * windowDimensions.y();
     }
 
     public float groundHeightAt(float x) {
@@ -46,8 +49,14 @@ public class Terrain {
     }
 
     public void createInRange(int minX, int maxX) {
-        minX = (minX >= 0 ? minX + (minX % Block.SIZE) : minX - (Block.SIZE + (minX % Block.SIZE)));
-        maxX = (maxX >= 0 ? maxX + (maxX % Block.SIZE) : maxX - (Block.SIZE + (maxX % Block.SIZE)));
+        this.createInRangeAndReturn(minX, maxX);
+    }
+
+    public List<GameObject> createInRangeAndReturn(int minX, int maxX) {
+        List<GameObject> createdObjects = new ArrayList<>();
+
+        minX = (minX >= 0 ? minX - (minX % Block.SIZE) : minX - (Block.SIZE + (minX % Block.SIZE)));
+        maxX = (maxX >= 0 ? maxX - (maxX % Block.SIZE) : maxX - (Block.SIZE + (maxX % Block.SIZE)));
 
         for (float x = minX; x < maxX; x += Block.SIZE) {
             float height = this.groundHeightAt(x);
@@ -55,13 +64,16 @@ public class Terrain {
                     Math.floor(height / Block.SIZE) * Block.SIZE,
                     windowDimensions.y() - Block.SIZE);
 
-            for (int i = 0; i < COLLIDABLE_DEPTH; i++) {
-                this.createBlock(i, x, height + (i * Block.SIZE));
+            for (int i = 0; i < TERRAIN_DEPTH; i++) {
+                createdObjects.add(this.createBlock(i, x, height + (i * Block.SIZE)));
             }
         }
+
+        return createdObjects;
     }
 
-    private void createBlock(int depth, float x, float y) {
+
+    private Block createBlock(int depth, float x, float y) {
         RectangleRenderable renderableBlock = new RectangleRenderable(
                 ColorSupplier.approximateColor(BASE_GROUND_COLOR));
 
@@ -70,5 +82,7 @@ public class Terrain {
 
         this.gameObjects.addGameObject(newBlock,
                 depth < COLLIDABLE_DEPTH ? this.collidableGroundLayer : this.groundLayer);
+
+        return newBlock;
     }
 }

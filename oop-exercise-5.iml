@@ -11,11 +11,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Exercise 3/libs/DanoGameLab/DanoGameLab.jar!/" />
+          <root url="jar://$MODULE_DIR$/../libs/DanoGameLab/DanoGameLab.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$MODULE_DIR$/../Exercise 3/libs/DanoGameLab/src" />
+          <root url="file://$MODULE_DIR$/../libs/DanoGameLab/src" />
         </SOURCES>
       </library>
     </orderEntry>
