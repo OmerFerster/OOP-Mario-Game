@@ -2,8 +2,10 @@ package pepse.world;
 
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
+import danogl.collisions.Layer;
 import danogl.util.Vector2;
-import pepse.util.IntegerPair;
+import pepse.util.Pair;
+import pepse.world.trees.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,50 +16,60 @@ public class InfiniteWorldManager {
 
     private static final int REGIONS_PER_WINDOW = 5;
 
-    private final Map<IntegerPair, List<GameObject>> gameObjectsPerRegion;
+    private final Map<Pair<Float>, List<GameObject>> gameObjectsPerRegion;
 
     private final GameObjectCollection gameObjects;
     private final Terrain terrain;
+    private final Tree trees;
 
-    private final int regionWidth;
+    private final float regionWidth;
     private final float maxDistanceBeforeDeletion;
 
-    private int minX, maxX;
+    private float minX, maxX;
 
     public InfiniteWorldManager(GameObjectCollection gameObjects, Vector2 windowDimensions,
-                                Terrain terrain) {
+                                Terrain terrain, Tree trees) {
         this.gameObjectsPerRegion = new HashMap<>();
 
         this.gameObjects = gameObjects;
         this.terrain = terrain;
+        this.trees = trees;
 
-        this.regionWidth = (int) windowDimensions.x() / REGIONS_PER_WINDOW;
+        this.regionWidth = windowDimensions.x() / REGIONS_PER_WINDOW;
         this.maxDistanceBeforeDeletion = windowDimensions.x() - this.regionWidth;
 
         this.minX = -this.regionWidth;
-        this.maxX = (int) (windowDimensions.x() + this.regionWidth);
+        this.maxX = windowDimensions.x() + this.regionWidth;
 
         // Create initial world
-        for (int i = this.minX; i < this.maxX; i += this.regionWidth) {
-            IntegerPair pair = new IntegerPair(i, (i + this.regionWidth));
+        for (float i = this.minX; i < this.maxX; i += this.regionWidth) {
+            Pair<Float> pair = new Pair<>(i, (i + this.regionWidth));
 
-            this.gameObjectsPerRegion.put(pair, this.terrain.createInRangeAndReturn(minX, maxX));
+            List<GameObject> createdObjects = new ArrayList<>();
+
+            createdObjects.addAll(this.terrain.createInRangeAndReturn(
+                    (int) Math.floor(i), (int) Math.ceil(i + this.regionWidth)));
+
+            createdObjects.addAll(this.trees.createInRangeAndReturn(
+                    (int) Math.floor(i), (int) Math.ceil(i + this.regionWidth)));
+
+            this.gameObjectsPerRegion.put(pair, createdObjects);
         }
     }
 
     public void checkWorld(int currentX) {
         float distFromMinX = Math.abs(currentX - this.minX);
         float distFromMaxX = Math.abs(currentX - this.maxX);
-        IntegerPair toDelete, toCreate;
+        Pair<Float> toDelete, toCreate;
 
         if (distFromMinX > this.maxDistanceBeforeDeletion) {
-            toDelete = new IntegerPair(minX, minX + this.regionWidth);
-            toCreate = new IntegerPair(maxX, maxX + this.regionWidth);
+            toDelete = new Pair<>(minX, minX + this.regionWidth);
+            toCreate = new Pair<>(maxX, maxX + this.regionWidth);
             this.minX += this.regionWidth;
             this.maxX += this.regionWidth;
         } else if (distFromMaxX > this.maxDistanceBeforeDeletion) {
-            toCreate = new IntegerPair(minX - this.regionWidth, minX);
-            toDelete = new IntegerPair(maxX - this.regionWidth, maxX);
+            toCreate = new Pair<>(minX - this.regionWidth, minX);
+            toDelete = new Pair<>(maxX - this.regionWidth, maxX);
             this.minX -= this.regionWidth;
             this.maxX -= this.regionWidth;
         } else {
@@ -67,28 +79,51 @@ public class InfiniteWorldManager {
         this.deleteAndCreateRegions(toDelete, toCreate);
     }
 
-    private void deleteAndCreateRegions(IntegerPair toDelete, IntegerPair toCreate) {
+    private void deleteAndCreateRegions(Pair<Float> toDelete, Pair<Float> toCreate) {
         if (!this.gameObjectsPerRegion.containsKey(toDelete) ||
                 this.gameObjectsPerRegion.containsKey(toCreate)) {
-            System.out.println("deleting " + toDelete.getA() + "," + toDelete.getB());
-            System.out.println("creating " + toCreate.getA() + "," + toCreate.getB());
-
-            System.out.println("====");
-
+            System.out.println("Failed to create");
+            System.out.println("Creating " + toCreate.getA() + ", " + toCreate.getB());
+            System.out.println("Deleting " + toDelete.getA() + ", " + toDelete.getB());
+            System.out.println("=====");
 //            throw RegionException();
-            this.gameObjectsPerRegion.keySet().forEach(key -> System.out.println(key.getA() + "," + key.getB()));
             return;
         }
 
+        System.out.println("Creating " + toCreate.getA() + ", " + toCreate.getB());
+        System.out.println("Deleting " + toDelete.getA() + ", " + toDelete.getB());
+        System.out.println("=====");
 
 
-        this.gameObjectsPerRegion.get(toDelete).forEach(this.gameObjects::removeGameObject);
+        this.gameObjectsPerRegion.get(toDelete).forEach(gameObject -> {
+            if (!removeGameObject(gameObject)) {
+                System.out.println("couldn't delete object of type " + gameObject.getTag());
+            }
+        });
+
+        // Flushing all removed game objects
+        this.gameObjects.update(0);
+
         this.gameObjectsPerRegion.remove(toDelete);
 
         List<GameObject> createdObjects = new ArrayList<>();
-        createdObjects.addAll(this.terrain.createInRangeAndReturn(toCreate.getA(), toCreate.getB()));
-//        createdObjects.addAll(this.trees.createInRangeAndReturn(toCreate.getA(), toCreate.getB()));
+        createdObjects.addAll(this.terrain.createInRangeAndReturn(
+                (int) Math.floor(toCreate.getA()), (int) Math.ceil(toCreate.getB())));
+
+        createdObjects.addAll(this.trees.createInRangeAndReturn(
+                (int) Math.floor(toCreate.getA()), (int) Math.ceil(toCreate.getB())));
 
         this.gameObjectsPerRegion.put(toCreate, createdObjects);
+    }
+
+    private boolean removeGameObject(GameObject gameObject) {
+        if (gameObject instanceof Block) {
+            return this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS) ||
+                    this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS - 1) ||
+                    this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND) ||
+                    this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND + 1);
+        }
+
+        return false;
     }
 }

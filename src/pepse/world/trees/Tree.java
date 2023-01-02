@@ -1,11 +1,12 @@
 package pepse.world.trees;
 
+import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.util.Vector2;
+import pepse.util.Utils;
 import pepse.world.Block;
 
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Tree {
 
@@ -17,6 +18,8 @@ public class Tree {
     private final int leavesLayer;
 
     private final Callback callback;
+
+    private Random random;
 
     public Tree(GameObjectCollection gameObjects, int layer, Vector2 windowDimensions,
                 Callback callback) {
@@ -34,35 +37,43 @@ public class Tree {
     }
 
     public void createInRange(int minX, int maxX) {
-        Random random = new Random(Objects.hash(minX, maxX));
+        this.createInRangeAndReturn(minX, maxX);
+    }
 
-        minX = (minX >= 0 ? minX : minX - (Block.SIZE + (minX % Block.SIZE)));
-        maxX = (maxX >= 0 ? maxX : maxX - (Block.SIZE + (maxX % Block.SIZE)));
+    public List<GameObject> createInRangeAndReturn(int minX, int maxX) {
+        List<GameObject> createdObjects = new ArrayList<>();
+
+        this.random = new Random(Objects.hash(minX, maxX));
+
+        minX = Utils.round(minX, Block.SIZE);
+        maxX = Utils.round(maxX, Block.SIZE);
 
         for (int x = minX; x < maxX; x += Block.SIZE) {
-            int chances = random.nextInt(15);
+            int chances = this.random.nextInt(15);
 
             if (chances == 0) {
-                this.createTree(x, random.nextInt(6) + 5);
+                this.createTree(createdObjects, x, this.random.nextInt(6) + 5);
 
                 x += 30; // Increasing x by another 30 so there can't be 2 trees next to each other
             }
         }
+
+        return createdObjects;
     }
 
-    private void createTree(int xLocation, int treeHeight) {
+    private void createTree(List<GameObject> createdObjects, int xLocation, int treeHeight) {
         float baseY = this.callback.run(xLocation);
 
         baseY = (float) Math.min(
                 Math.floor(baseY / Block.SIZE) * Block.SIZE,
                 windowDimensions.y() - Block.SIZE);
 
-        this.createLog(xLocation, baseY, treeHeight);
-        this.createLeaf(xLocation, baseY, treeHeight);
-
+        this.createLog(createdObjects, xLocation, baseY, treeHeight);
+        this.createLeaf(createdObjects, xLocation, baseY, treeHeight);
     }
 
-    private void createLeaf(float xLocation, float height, int treeHeight) {
+    private void createLeaf(List<GameObject> createdObjects,
+                                        float xLocation, float height, int treeHeight) {
         int startX = (int) xLocation - (Block.SIZE * (LEAFS_GRID_SIZE / 2));
         int endX = (int) xLocation + Block.SIZE + (Block.SIZE * (LEAFS_GRID_SIZE / 2));
         int startY = (int) (height - treeHeight * Block.SIZE) - (Block.SIZE * (LEAFS_GRID_SIZE / 2));
@@ -71,22 +82,31 @@ public class Tree {
 
         for (int i = startX; i < endX; i += Block.SIZE) {
             for (int j = startY; j < endY; j += Block.SIZE) {
+                if(this.random.nextInt(3) == 0) {
+                    continue;
+                }
+
                 Leaf leaf = new Leaf(new Vector2(i, j));
 
                 leaf.setTag("leaf");
 
                 this.gameObjects.addGameObject(leaf, this.leavesLayer);
+
+                createdObjects.add(leaf);
             }
         }
     }
 
-    private void createLog(float xLocation, float height, int treeHeight) {
+    private void createLog(List<GameObject> createdObjects,
+                                       float xLocation, float height, int treeHeight) {
         for (int i = 0; i < treeHeight; i++) {
             Log log = new Log(new Vector2(xLocation, height - ((i + 1) * Block.SIZE)));
 
             log.setTag("log");
 
             this.gameObjects.addGameObject(log, this.logLayer);
+
+            createdObjects.add(log);
         }
     }
 

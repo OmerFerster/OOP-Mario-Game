@@ -7,10 +7,10 @@ import danogl.util.Vector2;
 
 public class TextualGameObject extends GameObject {
 
-    private final TextUpdateCallback callback;
+    private final GameObjectUpdateCallback callback;
 
     public TextualGameObject(Vector2 topLeftCorner, Vector2 dimensions, TextRenderable renderable,
-                             TextUpdateCallback callback) {
+                             GameObjectUpdateCallback callback) {
         super(topLeftCorner, dimensions, renderable);
 
         this.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
@@ -26,7 +26,7 @@ public class TextualGameObject extends GameObject {
     }
 
     @FunctionalInterface
-    public interface TextUpdateCallback {
+    public interface GameObjectUpdateCallback {
         void run(TextRenderable renderable);
     }
 }

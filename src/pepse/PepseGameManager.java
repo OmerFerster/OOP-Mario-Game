@@ -3,10 +3,7 @@ package pepse;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
-import danogl.gui.ImageReader;
-import danogl.gui.SoundReader;
-import danogl.gui.UserInputListener;
-import danogl.gui.WindowController;
+import danogl.gui.*;
 import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
 import pepse.world.*;
@@ -29,9 +26,11 @@ public class PepseGameManager extends GameManager {
 
     private Vector2 windowDimensions;
     private WindowController windowController;
+    private SoundReader soundReader;
 
     private InfiniteWorldManager infiniteWorldManager;
     private Terrain terrain;
+    private Tree tree;
     private GameObject avatar;
 
     @Override
@@ -46,15 +45,19 @@ public class PepseGameManager extends GameManager {
 
         this.windowDimensions = windowController.getWindowDimensions();
         this.windowController = windowController;
+        this.soundReader = soundReader;
 
         this.createBackground();
         this.createTerrain();
 
         this.initAvatar(inputListener, imageReader);
 
+        this.initInfiniteWorldManager();
+
         this.initLayerCollisions();
 
-        this.initInfiniteWorldManager();
+        ///////////////////
+        //this.initialSound();  // todo check later
 
     }
 
@@ -62,14 +65,21 @@ public class PepseGameManager extends GameManager {
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if(this.infiniteWorldManager != null) {
+        if (this.infiniteWorldManager != null) {
             this.infiniteWorldManager.checkWorld((int) this.avatar.getCenter().x());
         }
     }
 
+    private void initialSound() {
+        Sound rainSound = soundReader.readSound("assets/soundtracks/rain.wav");
+        Sound birdSound = this.soundReader.readSound("assets/soundtracks/birds.wav");
+        rainSound.playLooped();
+        birdSound.playLooped();
+    }
+
     private void initInfiniteWorldManager() {
         this.infiniteWorldManager = new InfiniteWorldManager(this.gameObjects(),
-                this.windowDimensions, this.terrain);
+                this.windowDimensions, this.terrain, this.tree);
     }
 
     private void createBackground() {
@@ -85,9 +95,8 @@ public class PepseGameManager extends GameManager {
         this.terrain = new Terrain(this.gameObjects(), COLLIDABLE_TERRAIN_LAYER,
                 TERRAIN_LAYER, windowDimensions, 30);
 
-        Tree tree = new Tree(this.gameObjects(), LOGS_LAYER, LEAVES_LAYER,
+        this.tree = new Tree(this.gameObjects(), LOGS_LAYER, LEAVES_LAYER,
                 windowDimensions, terrain::groundHeightAt);
-        tree.createInRange(0, (int) windowDimensions.x());
     }
 
     private void initLayerCollisions() {
@@ -111,7 +120,7 @@ public class PepseGameManager extends GameManager {
         avatarY = (avatarY - avatarY % Block.SIZE) - Avatar.AVATAR_SIZE.y();
 
         this.avatar = Avatar.create(this.gameObjects(), Layer.DEFAULT,
-                new Vector2(avatarX, avatarY), userInputListener, imageReader);
+                new Vector2(avatarX, avatarY), userInputListener, imageReader, soundReader, windowDimensions);
 
         // Setting the camera to track the avatar
         this.setCamera(new Camera(this.avatar, Vector2.ZERO,

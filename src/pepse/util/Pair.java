@@ -2,33 +2,33 @@ package pepse.util;
 
 import java.util.Objects;
 
-public class IntegerPair {
+public class Pair<T> {
 
-    private int a;
-    private int b;
+    private T a;
+    private T b;
 
-    public IntegerPair(int a, int b) {
+    public Pair(T a, T b) {
         this.a = a;
         this.b = b;
     }
 
-    public int getA() {
+    public T getA() {
         return this.a;
     }
 
-    public int getB() {
+    public T getB() {
         return this.b;
     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof IntegerPair)) {
+        if (!(object instanceof Pair)) {
             return false;
         }
 
-        IntegerPair other = (IntegerPair) object;
+        Pair<?> other = (Pair<?>) object;
 
-        return other.getA() == this.getA() && other.getB() == this.getB();
+        return other.getA().equals(this.getA()) && other.getB().equals(this.getB());
     }
 
     @Override

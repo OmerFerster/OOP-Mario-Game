@@ -6,6 +6,7 @@ import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.util.NoiseGenerator;
+import pepse.util.Utils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -55,8 +56,8 @@ public class Terrain {
     public List<GameObject> createInRangeAndReturn(int minX, int maxX) {
         List<GameObject> createdObjects = new ArrayList<>();
 
-        minX = (minX >= 0 ? minX - (minX % Block.SIZE) : minX - (Block.SIZE + (minX % Block.SIZE)));
-        maxX = (maxX >= 0 ? maxX - (maxX % Block.SIZE) : maxX - (Block.SIZE + (maxX % Block.SIZE)));
+        minX = Utils.round(minX, Block.SIZE);
+        maxX = Utils.round(maxX, Block.SIZE);
 
         for (float x = minX; x < maxX; x += Block.SIZE) {
             float height = this.groundHeightAt(x);
