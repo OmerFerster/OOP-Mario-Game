@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7705b4c-e74a-43ae-a748-3e35714f65cc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Avatar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Avatar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/InfiniteWorldManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/InfiniteWorldManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Terrain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Terrain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Leaf.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Leaf.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/Avatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Avatar.java" afterDir="false" />
     </list>
     <list id="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" name="Changes by Liel" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +96,7 @@
       <workItem from="1672675390722" duration="1243000" />
       <workItem from="1672677081828" duration="9801000" />
       <workItem from="1672687492957" duration="1001000" />
-      <workItem from="1672738820491" duration="4167000" />
+      <workItem from="1672738820491" duration="4320000" />
     </task>
     <servers />
   </component>

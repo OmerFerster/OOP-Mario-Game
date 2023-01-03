@@ -13,6 +13,7 @@ import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.world.properties.NumericProperty;
+import pepse.world.trees.Log;
 import pepse.world.ui.TextualGameObject;
 import pepse.world.ui.VisualGameObject;
 
@@ -110,7 +111,9 @@ public class Avatar extends GameObject {
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
 
-        this.setVelocity(this.getVelocity().multY(0));
+        if(other instanceof Block && !(other instanceof Log)) {
+            this.setVelocity(this.getVelocity().multY(0));
+        }
     }
 
     /**
