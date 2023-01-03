@@ -12,6 +12,9 @@ import pepse.world.Block;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * A class that represents a single leaf game object
+ */
 public class Leaf extends Block {
 
     private static final Random random = new Random();
@@ -22,49 +25,69 @@ public class Leaf extends Block {
     private static final float LEAF_X_VELOCITY = 30;
     private static final float LEAF_Y_VELOCITY = 100;
 
+    private static final float ANGLE_TRANSITION_STARTING_VALUE = -2 * (float) Math.PI;
+    private static final float ANGLE_TRANSITION_ENDING_VALUE = 2 * (float) Math.PI;
+    private static final float SIZE_TRANSITION_STARTING_VALUE = 1.0f;
+    private static final float SIZE_TRANSITION_ENDING_VALUE = 0.95f;
+    private static final float TRANSITIONS_CYCLE_LENGTH = 0.4f;
+
+    private static final String TAG = "leaf";
+
     private final Vector2 initialPosition;
+
     private Transition<Float> fallingTransition;
 
     public Leaf(Vector2 topLeftCorner) {
         super(topLeftCorner, new RectangleRenderable(ColorSupplier.approximateColor(LEAF_COLOR)));
 
+        // Setting the leaf mass, so it doesn't push "heavier" objects
+        this.physics().setMass(LEAF_MASS);
+
+        this.setTag(TAG);
+
         this.initialPosition = topLeftCorner;
 
-        // Setting the leaf mass, so it doesn't push "heavier" objects
-        physics().setMass(LEAF_MASS);
-
+        // Starting the leaf animation transition at a random time so leaves are out of sync
         float randomTime = (((float) random.nextInt(10) + 1) / 10);
-
         new ScheduledTask(this, randomTime, false, this::initLeafTransitions);
 
-        randomTime = random.nextInt(5);
+        // Starting the leaf falling animation after a random time
+        randomTime = random.nextInt(3);
         new ScheduledTask(this, randomTime, false, this::startLeafAnimation);
     }
 
-
+    /**
+     * Starts the leaf wind transition while on the tree.
+     * These transitions are changing the angle and size of the leaf
+     */
     private void initLeafTransitions() {
         new Transition<>(
                 this,
                 this.renderer()::setRenderableAngle,
-                -2 * (float) Math.PI,
-                2 * (float) Math.PI,
+                ANGLE_TRANSITION_STARTING_VALUE,
+                ANGLE_TRANSITION_ENDING_VALUE,
                 Transition.CUBIC_INTERPOLATOR_FLOAT,
-                0.4f,
+                TRANSITIONS_CYCLE_LENGTH,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
 
         new Transition<>(
                 this,
                 (factor) -> this.setDimensions(new Vector2(Block.SIZE, Block.SIZE).mult(factor)),
-                1.0f,
-                0.95f,
+                SIZE_TRANSITION_STARTING_VALUE,
+                SIZE_TRANSITION_ENDING_VALUE,
                 Transition.CUBIC_INTERPOLATOR_FLOAT,
-                0.4f,
+                TRANSITIONS_CYCLE_LENGTH,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
     }
 
-
+    /**
+     * Starts the leaf animation.
+     * It repositions the leaf and sets all the initial values
+     * Then randomly selects a time (10-20) when the fall would start falling and fading
+     * and calls #startFade
+     */
     private void startLeafAnimation() {
         // Re-positioning the leaf
         this.setTopLeftCorner(this.initialPosition);
@@ -75,6 +98,11 @@ public class Leaf extends Block {
         new ScheduledTask(this, randomLifeTime, false, this::startFade);
     }
 
+    /**
+     * Starts the leaf falling animation.
+     * It adds a wind transition, then randomly selects a time (2-10), when the leaf
+     * would return to its origin position by calling #startLeafAnimation
+     */
     private void startFade() {
         this.fallingTransition = new Transition<>(
                 this,

@@ -1,6 +1,9 @@
 package pepse.world.properties;
 
-public class NumericProperty {
+/**
+ * A class that represents a numeric property with current value, min, max and a change factor
+ */
+public class NumericProperty implements Property<Double> {
 
     private final double factor;
 
@@ -18,7 +21,8 @@ public class NumericProperty {
         this.current = current;
     }
 
-    public double getValue() {
+    @Override
+    public Double getValue() {
         return this.current;
     }
 

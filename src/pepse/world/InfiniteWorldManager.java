@@ -12,81 +12,96 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class that handles the infinite world creation
+ */
 public class InfiniteWorldManager {
 
-    private static final int REGIONS_PER_WINDOW = 5;
+    private static final int CHUNKS_PER_WINDOW = 5;
 
-    private final Map<Pair<Float>, List<GameObject>> gameObjectsPerRegion;
+    private final Map<Pair<Float>, List<GameObject>> gameObjectsPerChunk;
 
     private final GameObjectCollection gameObjects;
     private final Terrain terrain;
     private final Tree trees;
 
-    private final float regionWidth;
-    private final float maxDistanceBeforeDeletion;
+    private final float chunkWidth;
+    private final float maxDistanceBeforeUpdated;
 
     private float minX, maxX;
 
     public InfiniteWorldManager(GameObjectCollection gameObjects, Vector2 windowDimensions,
                                 Terrain terrain, Tree trees) {
-        this.gameObjectsPerRegion = new HashMap<>();
+        this.gameObjectsPerChunk = new HashMap<>();
 
         this.gameObjects = gameObjects;
         this.terrain = terrain;
         this.trees = trees;
 
-        this.regionWidth = windowDimensions.x() / REGIONS_PER_WINDOW;
-        this.maxDistanceBeforeDeletion = windowDimensions.x() - this.regionWidth;
+        this.chunkWidth = windowDimensions.x() / CHUNKS_PER_WINDOW;
+        this.maxDistanceBeforeUpdated = windowDimensions.x() - this.chunkWidth;
 
-        this.minX = -this.regionWidth;
-        this.maxX = windowDimensions.x() + this.regionWidth;
+        this.minX = -this.chunkWidth;
+        this.maxX = windowDimensions.x() + this.chunkWidth;
 
         // Create initial world
-        for (float i = this.minX; i < this.maxX; i += this.regionWidth) {
-            Pair<Float> pair = new Pair<>(i, (i + this.regionWidth));
+        for (float i = this.minX; i < this.maxX; i += this.chunkWidth) {
+            Pair<Float> pair = new Pair<>(i, (i + this.chunkWidth));
 
             List<GameObject> createdObjects = new ArrayList<>();
 
             createdObjects.addAll(this.terrain.createInRangeAndReturn(
-                    (int) Math.floor(i), (int) Math.ceil(i + this.regionWidth)));
+                    (int) Math.floor(i), (int) Math.ceil(i + this.chunkWidth)));
 
             createdObjects.addAll(this.trees.createInRangeAndReturn(
-                    (int) Math.floor(i), (int) Math.ceil(i + this.regionWidth)));
+                    (int) Math.floor(i), (int) Math.ceil(i + this.chunkWidth)));
 
-            this.gameObjectsPerRegion.put(pair, createdObjects);
+            this.gameObjectsPerChunk.put(pair, createdObjects);
         }
     }
 
+    /**
+     * Checks if the currentX (screen middle) is too far right or left.
+     * If it is, we want to delete the furthest chunk and create a new one closer to us
+     *
+     * @param currentX   X location of the screen
+     */
     public void checkWorld(int currentX) {
         float distFromMinX = Math.abs(currentX - this.minX);
         float distFromMaxX = Math.abs(currentX - this.maxX);
         Pair<Float> toDelete, toCreate;
 
-        if (distFromMinX > this.maxDistanceBeforeDeletion) {
-            toDelete = new Pair<>(minX, minX + this.regionWidth);
-            toCreate = new Pair<>(maxX, maxX + this.regionWidth);
-            this.minX += this.regionWidth;
-            this.maxX += this.regionWidth;
-        } else if (distFromMaxX > this.maxDistanceBeforeDeletion) {
-            toCreate = new Pair<>(minX - this.regionWidth, minX);
-            toDelete = new Pair<>(maxX - this.regionWidth, maxX);
-            this.minX -= this.regionWidth;
-            this.maxX -= this.regionWidth;
+        if (distFromMinX > this.maxDistanceBeforeUpdated) {
+            toDelete = new Pair<>(minX, minX + this.chunkWidth);
+            toCreate = new Pair<>(maxX, maxX + this.chunkWidth);
+            this.minX += this.chunkWidth;
+            this.maxX += this.chunkWidth;
+        } else if (distFromMaxX > this.maxDistanceBeforeUpdated) {
+            toCreate = new Pair<>(minX - this.chunkWidth, minX);
+            toDelete = new Pair<>(maxX - this.chunkWidth, maxX);
+            this.minX -= this.chunkWidth;
+            this.maxX -= this.chunkWidth;
         } else {
             return;
         }
 
-        this.deleteAndCreateRegions(toDelete, toCreate);
+        this.updatedChunks(toDelete, toCreate);
     }
 
-    private void deleteAndCreateRegions(Pair<Float> toDelete, Pair<Float> toCreate) {
-        if (!this.gameObjectsPerRegion.containsKey(toDelete) ||
-                this.gameObjectsPerRegion.containsKey(toCreate)) {
+    /**
+     * Updates the game chunks by removing and creating chunks
+     *
+     * @param toDelete   Chunk to delete
+     * @param toCreate   Chunk to create
+     */
+    private void updatedChunks(Pair<Float> toDelete, Pair<Float> toCreate) {
+        if (!this.gameObjectsPerChunk.containsKey(toDelete) ||
+                this.gameObjectsPerChunk.containsKey(toCreate)) {
             System.out.println("Failed to create");
             System.out.println("Creating " + toCreate.getA() + ", " + toCreate.getB());
             System.out.println("Deleting " + toDelete.getA() + ", " + toDelete.getB());
             System.out.println("=====");
-//            throw RegionException();
+//            throw ChunkException();
             return;
         }
 
@@ -94,17 +109,15 @@ public class InfiniteWorldManager {
         System.out.println("Deleting " + toDelete.getA() + ", " + toDelete.getB());
         System.out.println("=====");
 
-
-        this.gameObjectsPerRegion.get(toDelete).forEach(gameObject -> {
-            if (!removeGameObject(gameObject)) {
-                System.out.println("couldn't delete object of type " + gameObject.getTag());
-            }
-        });
+        // Trying to remove all game objects in a chunk
+        this.gameObjectsPerChunk.get(toDelete).stream().filter(this::removeGameObject)
+                        .forEach(failed -> System.out.println(
+                                "[DEBUG] couldn't delete object of type " + failed.getTag()));
 
         // Flushing all removed game objects
         this.gameObjects.update(0);
 
-        this.gameObjectsPerRegion.remove(toDelete);
+        this.gameObjectsPerChunk.remove(toDelete);
 
         List<GameObject> createdObjects = new ArrayList<>();
         createdObjects.addAll(this.terrain.createInRangeAndReturn(
@@ -113,17 +126,19 @@ public class InfiniteWorldManager {
         createdObjects.addAll(this.trees.createInRangeAndReturn(
                 (int) Math.floor(toCreate.getA()), (int) Math.ceil(toCreate.getB())));
 
-        this.gameObjectsPerRegion.put(toCreate, createdObjects);
+        this.gameObjectsPerChunk.put(toCreate, createdObjects);
     }
 
+    /**
+     * Removes a single game object - tries to remove it from all used layers
+     *
+     * @param gameObject   Game object to remove
+     * @return             Whether the removal was successful
+     */
     private boolean removeGameObject(GameObject gameObject) {
-        if (gameObject instanceof Block) {
-            return this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS) ||
-                    this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS - 1) ||
-                    this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND) ||
-                    this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND + 1);
-        }
-
-        return false;
+        return this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS) ||
+                this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS - 1) ||
+                this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND) ||
+                this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND + 1);
     }
 }

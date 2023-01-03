@@ -8,6 +8,9 @@ import pepse.world.Block;
 
 import java.util.*;
 
+/**
+ * A class that handles the creation of trees within the game
+ */
 public class Tree {
 
     private static final int LEAFS_GRID_SIZE = 5;
@@ -36,10 +39,23 @@ public class Tree {
         this.callback = callback;
     }
 
+    /**
+     * Creates the trees terrain in a given range
+     *
+     * @param minX   Range starting point
+     * @param maxX   Range ending point
+     */
     public void createInRange(int minX, int maxX) {
         this.createInRangeAndReturn(minX, maxX);
     }
 
+    /**
+     * Creates the trees terrain in a given range and returns a list of created game objects
+     *
+     * @param minX   Range starting point
+     * @param maxX   Range ending point
+     * @return       All game objects created within the given range
+     */
     public List<GameObject> createInRangeAndReturn(int minX, int maxX) {
         List<GameObject> createdObjects = new ArrayList<>();
 
@@ -61,6 +77,13 @@ public class Tree {
         return createdObjects;
     }
 
+    /**
+     * Creates a single tree
+     *
+     * @param createdObjects   List to add the created game objects to
+     * @param xLocation        X location of the tree to create
+     * @param treeHeight       Height of the tree to create
+     */
     private void createTree(List<GameObject> createdObjects, int xLocation, int treeHeight) {
         float baseY = this.callback.run(xLocation);
 
@@ -69,10 +92,18 @@ public class Tree {
                 windowDimensions.y() - Block.SIZE);
 
         this.createLog(createdObjects, xLocation, baseY, treeHeight);
-        this.createLeaf(createdObjects, xLocation, baseY, treeHeight);
+        this.createLeaves(createdObjects, xLocation, baseY, treeHeight);
     }
 
-    private void createLeaf(List<GameObject> createdObjects,
+    /**
+     * Creates all the leaves of the current tree and adds them to the given list
+     *
+     * @param createdObjects   List to add created leaves to
+     * @param xLocation        X location of the tree to create the leaves of
+     * @param height           Ground height at the tree to create the leaves of
+     * @param treeHeight       Height of the tree to create
+     */
+    private void createLeaves(List<GameObject> createdObjects,
                                         float xLocation, float height, int treeHeight) {
         int startX = (int) xLocation - (Block.SIZE * (LEAFS_GRID_SIZE / 2));
         int endX = (int) xLocation + Block.SIZE + (Block.SIZE * (LEAFS_GRID_SIZE / 2));
@@ -88,8 +119,6 @@ public class Tree {
 
                 Leaf leaf = new Leaf(new Vector2(i, j));
 
-                leaf.setTag("leaf");
-
                 this.gameObjects.addGameObject(leaf, this.leavesLayer);
 
                 createdObjects.add(leaf);
@@ -97,12 +126,18 @@ public class Tree {
         }
     }
 
+    /**
+     * Creates all the logs of the current tree and adds them to the given list
+     *
+     * @param createdObjects   List to add created logs to
+     * @param xLocation        X location of the tree to create the logs of
+     * @param height           Ground height at the tree to create the logs of
+     * @param treeHeight       Height of the tree to create
+     */
     private void createLog(List<GameObject> createdObjects,
                                        float xLocation, float height, int treeHeight) {
         for (int i = 0; i < treeHeight; i++) {
             Log log = new Log(new Vector2(xLocation, height - ((i + 1) * Block.SIZE)));
-
-            log.setTag("log");
 
             this.gameObjects.addGameObject(log, this.logLayer);
 
@@ -110,6 +145,10 @@ public class Tree {
         }
     }
 
+    /**
+     * A callback for getting and returning float values.
+     * Used to get the height at a given x index.
+     */
     @FunctionalInterface
     public interface Callback {
         float run(float x);

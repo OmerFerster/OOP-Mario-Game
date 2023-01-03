@@ -6,34 +6,44 @@ import danogl.collisions.Layer;
 import danogl.components.CoordinateSpace;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
-import pepse.world.properties.NumericProperty;
+import pepse.util.UIGameObjectCallback;
 
 import java.awt.*;
 
+/**
+ * A class that handles a visual UI game object
+ */
 public class VisualGameObject {
 
-    private static final int SIZE = 30;
-    private static final Vector2 dimensions = new Vector2(SIZE * 3, SIZE);
+    /**
+     * Creates a textual game object and returns it
+     *
+     * @param gameObjects     Game objects collection to add the created object to
+     * @param topLeftCornet   Top left corner to position the created object
+     * @param dimensions      Dimensions of the created object
+     * @param frontColor      The color of the front created object
+     * @param backColor       The color of the back created object
+     * @param callback        A callback used to update the object's renderable
+     * @return                Created textual ui object
+     */
+    public static GameObject createVisualGameObject(
+            GameObjectCollection gameObjects, Vector2 topLeftCornet, Vector2 dimensions,
+            Color frontColor, Color backColor, UIGameObjectCallback callback) {
+        RectangleRenderable backRenderable = new RectangleRenderable(backColor);
+        RectangleRenderable frontRenderable = new RectangleRenderable(frontColor);
 
-    private final GameObject redHealth;
-    private final GameObject grayHealth;
+        GameObject backGameObject = new GameObject(topLeftCornet, dimensions, backRenderable);
+        GameObject frontGameObject = new GameObject(topLeftCornet, dimensions, frontRenderable);
 
-    public VisualGameObject(GameObjectCollection gameObjects,
-                            Vector2 windowDimensions, NumericProperty property) {
+        backGameObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+        frontGameObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
 
-        Vector2 topLeftCorner = new Vector2(30, windowDimensions.y() - SIZE * 2);
+        frontGameObject.addComponent(deltaTime -> callback.update(frontGameObject));
 
-        this.grayHealth = new GameObject(topLeftCorner, dimensions, new RectangleRenderable(Color.GRAY));
-        this.redHealth = new GameObject(topLeftCorner, dimensions, new RectangleRenderable(Color.RED));
+        // Adding the back game object first
+        gameObjects.addGameObject(backGameObject, Layer.UI);
+        gameObjects.addGameObject(frontGameObject, Layer.UI);
 
-        this.grayHealth.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-        this.redHealth.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-
-        this.redHealth.addComponent((deltaTime) ->
-                this.redHealth.setDimensions(
-                        dimensions.multX((float) (property.getValue() / property.getMaxValue()))));
-
-        gameObjects.addGameObject(this.grayHealth, Layer.UI);
-        gameObjects.addGameObject(this.redHealth, Layer.UI);
+        return frontGameObject;
     }
 }

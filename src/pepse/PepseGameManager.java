@@ -26,6 +26,8 @@ public class PepseGameManager extends GameManager {
 
     private Vector2 windowDimensions;
     private WindowController windowController;
+    private UserInputListener inputListener;
+    private ImageReader imageReader;
     private SoundReader soundReader;
 
     private InfiniteWorldManager infiniteWorldManager;
@@ -38,6 +40,19 @@ public class PepseGameManager extends GameManager {
         super.run();
     }
 
+    /**
+     * Initializes the game
+     *
+     * @param imageReader Contains a single method: readImage, which reads an image from disk.
+     *                 See its documentation for help.
+     * @param soundReader Contains a single method: readSound, which reads a wav file from
+     *                    disk. See its documentation for help.
+     * @param inputListener Contains a single method: isKeyPressed, which returns whether
+     *                      a given key is currently pressed by the user or not. See its
+     *                      documentation.
+     * @param windowController Contains an array of helpful, self explanatory methods
+     *                         concerning the window.
+     */
     @Override
     public void initializeGame(ImageReader imageReader, SoundReader soundReader,
                                UserInputListener inputListener, WindowController windowController) {
@@ -45,12 +60,14 @@ public class PepseGameManager extends GameManager {
 
         this.windowDimensions = windowController.getWindowDimensions();
         this.windowController = windowController;
+        this.inputListener = inputListener;
+        this.imageReader = imageReader;
         this.soundReader = soundReader;
 
         this.createBackground();
         this.createTerrain();
 
-        this.initAvatar(inputListener, imageReader);
+        this.createAvatar();
 
         this.initInfiniteWorldManager();
 
@@ -58,9 +75,18 @@ public class PepseGameManager extends GameManager {
 
         ///////////////////
         //this.initialSound();  // todo check later
-
     }
 
+    /**
+     * Updates the world if needed, so a feeling of infinite world is given
+     *
+     * @param deltaTime The time, in seconds, that passed since the last invocation
+     *                  of this method (i.e., since the last frame). This is useful
+     *                  for either accumulating the total time that passed since some
+     *                  event, or for physics integration (i.e., multiply this by
+     *                  the acceleration to get an estimate of the added velocity or
+     *                  by the velocity to get an estimate of the difference in position).
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -70,18 +96,10 @@ public class PepseGameManager extends GameManager {
         }
     }
 
-    private void initialSound() {
-        Sound rainSound = soundReader.readSound("assets/soundtracks/rain.wav");
-        Sound birdSound = this.soundReader.readSound("assets/soundtracks/birds.wav");
-        rainSound.playLooped();
-        birdSound.playLooped();
-    }
 
-    private void initInfiniteWorldManager() {
-        this.infiniteWorldManager = new InfiniteWorldManager(this.gameObjects(),
-                this.windowDimensions, this.terrain, this.tree);
-    }
-
+    /**
+     * Creates the background scene: sky, night and day
+     */
     private void createBackground() {
         Sky.create(this.gameObjects(), this.windowDimensions, Layer.BACKGROUND);
 
@@ -91,6 +109,9 @@ public class PepseGameManager extends GameManager {
         SunHalo.create(this.gameObjects(), SUN_HALO_LAYER, sun, new Color(255, 255, 0, 20));
     }
 
+    /**
+     * Creates the terrain scene: ground and trees
+     */
     private void createTerrain() {
         this.terrain = new Terrain(this.gameObjects(), COLLIDABLE_TERRAIN_LAYER,
                 TERRAIN_LAYER, windowDimensions, 30);
@@ -99,6 +120,35 @@ public class PepseGameManager extends GameManager {
                 windowDimensions, terrain::groundHeightAt);
     }
 
+    /**
+     * Creates the game's avatar and sets the camera to follow it
+     */
+    private void createAvatar() {
+        float avatarX = (this.windowDimensions.x() / 2) - (Avatar.AVATAR_SIZE.x() / 2);
+        float avatarY = this.terrain.groundHeightAt(avatarX);
+        avatarY = (avatarY - avatarY % Block.SIZE) - Avatar.AVATAR_SIZE.y();
+
+        this.avatar = Avatar.create(this.gameObjects(), Layer.DEFAULT,
+                new Vector2(avatarX, avatarY),
+                this.inputListener, this.imageReader, this.soundReader, this.windowDimensions);
+
+        // Setting the camera to track the avatar
+        this.setCamera(new Camera(this.avatar, Vector2.ZERO,
+                this.windowController.getWindowDimensions(),
+                this.windowController.getWindowDimensions()));
+    }
+
+    /**
+     * Initializes the infinite world manager
+     */
+    private void initInfiniteWorldManager() {
+        this.infiniteWorldManager = new InfiniteWorldManager(this.gameObjects(),
+                this.windowDimensions, this.terrain, this.tree);
+    }
+
+    /**
+     * Initializes collision between layers
+     */
     private void initLayerCollisions() {
         // Making trees collide with terrain
         this.gameObjects().layers().shouldLayersCollide(LEAVES_LAYER,
@@ -114,18 +164,14 @@ public class PepseGameManager extends GameManager {
         // Making default objects (player)
     }
 
-    private void initAvatar(UserInputListener userInputListener, ImageReader imageReader) {
-        float avatarX = (windowDimensions.x() / 2) - (Avatar.AVATAR_SIZE.x() / 2);
-        float avatarY = this.terrain.groundHeightAt(avatarX);
-        avatarY = (avatarY - avatarY % Block.SIZE) - Avatar.AVATAR_SIZE.y();
-
-        this.avatar = Avatar.create(this.gameObjects(), Layer.DEFAULT,
-                new Vector2(avatarX, avatarY), userInputListener, imageReader, soundReader, windowDimensions);
-
-        // Setting the camera to track the avatar
-        this.setCamera(new Camera(this.avatar, Vector2.ZERO,
-                this.windowController.getWindowDimensions(),
-                this.windowController.getWindowDimensions()));
+    /**
+     * Initializes the game background sounds
+     */
+    private void initialSound() {
+        Sound rainSound = soundReader.readSound("assets/soundtracks/rain.wav");
+        Sound birdSound = this.soundReader.readSound("assets/soundtracks/birds.wav");
+        rainSound.playLooped();
+        birdSound.playLooped();
     }
 
 

@@ -10,6 +10,9 @@ import danogl.util.Vector2;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * A class that handles the creation of sun objects
+ */
 public class Sun {
 
     private static final float SUN_RADIUS = 100;
@@ -17,9 +20,18 @@ public class Sun {
     private static final float SUN_ORBIT_RADIUS = 125;
     private static final float SUN_ORBIT_ELLIPSE_A = 5;
     private static final float SUN_ORBIT_ELLIPSE_B = 3;
-    private static final float SUN_ORBIT_Y_MARGIN = 20;
 
+    private static final String TAG = "SUN";
 
+    /**
+     * Creates a sun object
+     *
+     * @param gameObjects        List of game objects to add the sun object to
+     * @param layer              Layer of the sun object
+     * @param windowDimensions   Window dimensions for the sun object size
+     * @param cycleLength        The length of a full day cycle
+     * @return                   Created sun game object
+     */
     public static GameObject create(GameObjectCollection gameObjects, int layer,
                                     Vector2 windowDimensions, float cycleLength) {
         float screenMidX = (windowDimensions.x() / 2);
@@ -33,7 +45,7 @@ public class Sun {
         GameObject sun = new GameObject(new Vector2(sunX, sunY), Vector2.ONES.mult(SUN_RADIUS), sunRender);
 
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-        sun.setTag("sun");
+        sun.setTag(TAG);
 
         gameObjects.addGameObject(sun, layer);
 
