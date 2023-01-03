@@ -11,42 +11,53 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * A class that handles the infinite world creation
  */
 public class InfiniteWorldManager {
 
-    private static final int CHUNKS_PER_WINDOW = 5;
-
-    private final Map<Pair<Float>, List<GameObject>> gameObjectsPerChunk;
+    private final Map<Pair<Integer>, List<GameObject>> gameObjectsPerChunk;
 
     private final GameObjectCollection gameObjects;
     private final Terrain terrain;
     private final Tree trees;
 
-    private final float chunkWidth;
-    private final float maxDistanceBeforeUpdated;
+    private final int chunkWidth;
+    private final int maxDistanceBeforeUpdated;
 
-    private float minX, maxX;
+    private int minX, maxX;
 
     public InfiniteWorldManager(GameObjectCollection gameObjects, Vector2 windowDimensions,
                                 Terrain terrain, Tree trees) {
+        // Checks the optimal chunks per window variable (starting from 5 down to 1)
+        int CHUNKS_PER_WINDOW = 1;
+
+        for(int i = 5; i > 1; i--) {
+            if(windowDimensions.x() % i == 0) {
+                CHUNKS_PER_WINDOW = i;
+                break;
+            }
+        }
+
+        System.out.println("OPTIMAL CHUNKS PER WINDOW: " + CHUNKS_PER_WINDOW);
+
         this.gameObjectsPerChunk = new HashMap<>();
 
         this.gameObjects = gameObjects;
         this.terrain = terrain;
         this.trees = trees;
 
-        this.chunkWidth = windowDimensions.x() / CHUNKS_PER_WINDOW;
-        this.maxDistanceBeforeUpdated = windowDimensions.x() - this.chunkWidth;
+        this.chunkWidth = (int) (windowDimensions.x() / CHUNKS_PER_WINDOW);
+        this.maxDistanceBeforeUpdated = (int) (windowDimensions.x() - this.chunkWidth);
 
-        this.minX = -this.chunkWidth;
-        this.maxX = windowDimensions.x() + this.chunkWidth;
+        this.minX = - this.chunkWidth;
+        this.maxX = (int) (windowDimensions.x() + this.chunkWidth);
 
         // Create initial world
-        for (float i = this.minX; i < this.maxX; i += this.chunkWidth) {
-            Pair<Float> pair = new Pair<>(i, (i + this.chunkWidth));
+        for (int i = this.minX; i < this.maxX; i += this.chunkWidth) {
+            Pair<Integer> pair = new Pair<>(i, (i + this.chunkWidth));
 
             List<GameObject> createdObjects = new ArrayList<>();
 
@@ -69,16 +80,19 @@ public class InfiniteWorldManager {
     public void checkWorld(int currentX) {
         float distFromMinX = Math.abs(currentX - this.minX);
         float distFromMaxX = Math.abs(currentX - this.maxX);
-        Pair<Float> toDelete, toCreate;
+
+        Pair<Integer> toDelete, toCreate;
 
         if (distFromMinX > this.maxDistanceBeforeUpdated) {
             toDelete = new Pair<>(minX, minX + this.chunkWidth);
             toCreate = new Pair<>(maxX, maxX + this.chunkWidth);
+
             this.minX += this.chunkWidth;
             this.maxX += this.chunkWidth;
         } else if (distFromMaxX > this.maxDistanceBeforeUpdated) {
             toCreate = new Pair<>(minX - this.chunkWidth, minX);
             toDelete = new Pair<>(maxX - this.chunkWidth, maxX);
+
             this.minX -= this.chunkWidth;
             this.maxX -= this.chunkWidth;
         } else {
@@ -94,7 +108,7 @@ public class InfiniteWorldManager {
      * @param toDelete   Chunk to delete
      * @param toCreate   Chunk to create
      */
-    private void updatedChunks(Pair<Float> toDelete, Pair<Float> toCreate) {
+    private void updatedChunks(Pair<Integer> toDelete, Pair<Integer> toCreate) {
         if (!this.gameObjectsPerChunk.containsKey(toDelete) ||
                 this.gameObjectsPerChunk.containsKey(toCreate)) {
             System.out.println("Failed to create");
@@ -110,10 +124,10 @@ public class InfiniteWorldManager {
         System.out.println("=====");
 
         // Trying to remove all game objects in a chunk
-        this.gameObjectsPerChunk.get(toDelete).stream().filter(this::removeGameObject)
-                        .forEach(failed -> System.out.println(
-                                "[DEBUG] couldn't delete object of type " + failed.getTag()));
 
+        this.gameObjectsPerChunk.get(toDelete).stream().filter(Predicate.not(this::removeGameObject))
+                .forEach(failed -> System.out.println(
+                        "[DEBUG] couldn't delete object of type " + failed.getTag()));
         // Flushing all removed game objects
         this.gameObjects.update(0);
 
