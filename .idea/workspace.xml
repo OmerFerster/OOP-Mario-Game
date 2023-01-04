@@ -5,47 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7705b4c-e74a-43ae-a748-3e35714f65cc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/Animal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/Entity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/EntityManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/Pirate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/oop-exercise-5.iml" beforeDir="false" afterPath="$PROJECT_DIR$/oop-exercise-5.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/PepseGameManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/PepseGameManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/ColorSupplier.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/ColorSupplier.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/Pair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/Pair.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Avatar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Avatar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/InfiniteWorldManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/InfiniteWorldManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Sky.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Sky.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Terrain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Terrain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/daynight/Sun.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/daynight/Sun.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/properties/NumericProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/properties/NumericProperty.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Tree$Callback.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Tree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/ui/TextualGameObject$GameObjectUpdateCallback.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/util/ColorSupplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/ColorSupplier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/util/NoiseGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/NoiseGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/util/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/Pair.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Avatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Avatar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Sky.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Sky.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Terrain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/daynight/Night.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/daynight/Night.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/daynight/Sun.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/daynight/Sun.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/daynight/SunHalo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/daynight/SunHalo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/properties/Property.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/properties/Property.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/trees/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/trees/Tree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" afterDir="false" />
-    </list>
-    <list id="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" name="Changes by Liel" comment="">
       <change beforePath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pepse/world/Avatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Avatar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Terrain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/properties/NumericProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/properties/NumericProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/trees/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/trees/Tree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/EntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/EntityManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,113 +26,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/src/pepse/world/Terrain.java">
-      <ranges>
-        <range start1="17" end1="18" start2="17" end2="18" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="53" end1="55" start2="53" end2="55" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="64" end1="66" start2="64" end2="66" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="74" end1="77" start2="74" end2="77" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="78" end1="78" start2="78" end2="79" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="102" end1="106" start2="103" end2="107" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/src/pepse/world/Avatar.java">
-      <ranges>
-        <range start1="11" end1="12" start2="11" end2="11" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="13" end1="14" start2="12" end2="12" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="16" end1="17" start2="14" end2="14" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="22" end1="23" start2="19" end2="20" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="27" end1="27" start2="24" end2="26" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="34" end1="36" start2="33" end2="35" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="37" end1="38" start2="36" end2="37" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="73" end1="74" start2="72" end2="73" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="104" end1="105" start2="103" end2="104" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="113" end1="114" start2="112" end2="113" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="125" end1="126" start2="124" end2="125" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="129" end1="130" start2="128" end2="129" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="135" end1="136" start2="134" end2="135" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="158" end1="159" start2="157" end2="158" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="163" end1="164" start2="162" end2="163" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="167" end1="168" start2="166" end2="167" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="176" end1="177" start2="175" end2="176" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="179" end1="180" start2="178" end2="179" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="189" end1="190" start2="188" end2="189" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="198" end1="199" start2="197" end2="198" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="212" end1="213" start2="211" end2="212" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="227" end1="228" start2="226" end2="227" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="243" end1="244" start2="242" end2="243" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="259" end1="260" start2="258" end2="259" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="275" end1="276" start2="274" end2="275" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="277" end1="278" start2="276" end2="277" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="279" end1="290" start2="278" end2="281" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="292" end1="292" start2="283" end2="321" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="296" end1="302" start2="325" end2="331" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="303" end1="304" start2="332" end2="333" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="314" end1="322" start2="343" end2="351" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="323" end1="324" start2="352" end2="353" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="341" end1="342" start2="370" end2="371" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="344" end1="346" start2="373" end2="378" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="347" end1="351" start2="379" end2="386" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="355" end1="357" start2="390" end2="392" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="361" end1="364" start2="396" end2="403" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/src/pepse/PepseGameManager.java">
-      <ranges>
-        <range start1="12" end1="12" start2="12" end2="13" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="35" end1="36" start2="36" end2="38" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="45" end1="53" start2="47" end2="55" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="71" end1="71" start2="73" end2="75" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="75" end1="77" start2="79" end2="80" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="139" end1="139" start2="142" end2="147" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="145" end1="146" start2="153" end2="154" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="156" end1="157" start2="164" end2="165" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/src/pepse/world/trees/Tree.java">
-      <ranges>
-        <range start1="5" end1="5" start2="5" end2="6" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="7" end1="7" start2="8" end2="9" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="13" end1="14" start2="15" end2="16" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="22" end1="23" start2="24" end2="25" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="27" end1="28" start2="29" end2="30" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="32" end1="33" start2="34" end2="35" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="44" end1="46" start2="46" end2="48" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="54" end1="57" start2="56" end2="59" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="58" end1="58" start2="60" end2="61" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="82" end1="85" start2="85" end2="88" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="100" end1="104" start2="103" end2="107" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="106" end1="107" start2="109" end2="110" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="115" end1="116" start2="118" end2="119" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="131" end1="135" start2="134" end2="138" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="137" end1="138" start2="140" end2="141" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="146" end1="155" start2="149" end2="149" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java">
-      <ranges>
-        <range start1="7" end1="7" start2="7" end2="8" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="22" end1="22" start2="23" end2="24" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="23" end1="25" start2="25" end2="25" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="32" end1="33" start2="32" end2="33" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="36" end1="38" start2="36" end2="38" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="43" end1="45" start2="43" end2="43" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="47" end1="47" start2="45" end2="46" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="48" end1="50" start2="47" end2="47" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="54" end1="55" start2="51" end2="52" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="63" end1="68" start2="60" end2="64" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="77" end1="78" start2="73" end2="74" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="107" end1="109" start2="103" end2="105" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="113" end1="117" start2="109" end2="114" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="121" end1="124" start2="118" end2="121" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="136" end1="138" start2="133" end2="133" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="139" end1="141" start2="134" end2="139" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-        <range start1="148" end1="150" start2="146" end2="148" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
-        <range start1="155" end1="156" start2="153" end2="155" changelist="c55ca316-03a4-4fc7-b30b-cb7e28460bd1" />
-      </ranges>
-    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -244,7 +101,8 @@
       <workItem from="1672687492957" duration="1001000" />
       <workItem from="1672738820491" duration="4320000" />
       <workItem from="1672745041011" duration="399000" />
-      <workItem from="1672823926038" duration="5407000" />
+      <workItem from="1672823926038" duration="5540000" />
+      <workItem from="1672845988827" duration="3399000" />
     </task>
     <servers />
   </component>

@@ -5,6 +5,7 @@ import danogl.collisions.Collision;
 import danogl.gui.ImageReader;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.world.Avatar;
 import pepse.world.Block;
 import pepse.world.trees.Log;
 
@@ -15,9 +16,11 @@ public abstract class Entity extends GameObject {
     private static final int ENTITY_GRAVITY = 300;
     private final static int ENTITY_SPEED = 300;
 
-    protected final Random random;
+    private boolean needToKill;
 
+    protected final Random random;
     protected boolean isMoving;
+
 
     public Entity(Vector2 topLeftCorner, Vector2 dimensions, ImageReader imageReader) {
         super(topLeftCorner, dimensions, null);
@@ -25,6 +28,7 @@ public abstract class Entity extends GameObject {
         this.random = new Random();
 
         this.isMoving = false;
+        this.needToKill = false;
 
         this.physics().preventIntersectionsFromDirection(Vector2.ZERO);
         this.physics().setMass(1.0f);
@@ -48,6 +52,15 @@ public abstract class Entity extends GameObject {
         if (other instanceof Block && !(other instanceof Log)) {
             this.setVelocity(this.getVelocity().multY(0));
         }
+
+    }
+
+    public void kill() {
+        this.needToKill = true;
+    }
+
+    public boolean isNeedToKill() {
+        return needToKill;
     }
 
     private void handleMovement() {

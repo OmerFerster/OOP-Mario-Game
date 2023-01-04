@@ -29,7 +29,6 @@ public class PepseGameManager extends GameManager {
     private WindowController windowController;
     private UserInputListener inputListener;
     private ImageReader imageReader;
-    private SoundReader soundReader;
 
     private InfiniteWorldManager infiniteWorldManager;
     private Terrain terrain;
@@ -64,20 +63,18 @@ public class PepseGameManager extends GameManager {
         this.windowController = windowController;
         this.inputListener = inputListener;
         this.imageReader = imageReader;
-        this.soundReader = soundReader;
 
         this.createBackground();
         this.createTerrain();
 
         this.createAvatar();
 
-        this.createEnteties();
+        this.createEntities();
 
         this.initInfiniteWorldManager();
 
         this.initLayerCollisions();
 
-        // this.initialSound();  // TODO check later.
     }
 
     /**
@@ -133,7 +130,7 @@ public class PepseGameManager extends GameManager {
 
         this.avatar = Avatar.create(this.gameObjects(), Layer.DEFAULT,
                 new Vector2(avatarX, avatarY),
-                this.inputListener, this.imageReader, this.soundReader, this.windowDimensions);
+                this.inputListener, this.imageReader, this.windowDimensions);
 
         // Setting the camera to track the avatar
         this.setCamera(new Camera(this.avatar, Vector2.ZERO,
@@ -141,7 +138,7 @@ public class PepseGameManager extends GameManager {
                 this.windowController.getWindowDimensions()));
     }
 
-    private void createEnteties() {
+    private void createEntities() {
         this.entityManager = new EntityManager(this.gameObjects(), Layer.DEFAULT,
                 this.terrain::groundHeightAt, this.avatar, this.imageReader);
     }
@@ -171,17 +168,6 @@ public class PepseGameManager extends GameManager {
 
         // Making default objects (player)
     }
-
-    /**
-     * Initializes the game background sounds
-     */
-    private void initialSound() {
-        Sound rainSound = soundReader.readSound("assets/soundtracks/rain.wav");
-        Sound birdSound = this.soundReader.readSound("assets/soundtracks/birds.wav");
-        rainSound.playLooped();
-        birdSound.playLooped();
-    }
-
 
     public static void main(String[] args) {
         new PepseGameManager().run();

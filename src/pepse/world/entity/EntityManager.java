@@ -7,7 +7,6 @@ import danogl.util.Vector2;
 import pepse.util.FloatCallback;
 import pepse.world.Avatar;
 import pepse.world.Creator;
-import pepse.world.Damagable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +45,23 @@ public class EntityManager implements Creator {
                 if (this.random.nextBoolean()) {
                     Vector2 initialHeight = new Vector2(i,
                             this.callback.run(i) - Animal.ANIMAL_SIZE.y());
-
-                    createdGameObjects.add(new Animal(initialHeight, this.imageReader));
+                    Animal newAnimal = new Animal(initialHeight, this.imageReader);
+                    newAnimal.addComponent((deltaTime) -> {
+                        if (newAnimal.isNeedToKill()){
+                            gameObjects.removeGameObject(newAnimal);
+                        }
+                    });
+                    createdGameObjects.add(newAnimal);
                 } else {
                     Vector2 initialHeight = new Vector2(i,
                             this.callback.run(i) - Pirate.PIRATE_SIZE.y());
-
-                    createdGameObjects.add(new Pirate(initialHeight, this.imageReader, this.target));
+                    Pirate newPirate = new Pirate(initialHeight, this.imageReader, this.target);
+                    newPirate.addComponent((deltaTime) -> {
+                        if (newPirate.isNeedToKill()){
+                            gameObjects.removeGameObject(newPirate);
+                        }
+                    });
+                    createdGameObjects.add(newPirate);
                 }
             }
         }
@@ -63,4 +72,5 @@ public class EntityManager implements Creator {
 
         return createdGameObjects;
     }
+
 }
