@@ -9,22 +9,21 @@ import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.rendering.AnimationRenderable;
 import danogl.gui.rendering.Renderable;
-import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
-import pepse.util.ColorSupplier;
 import pepse.world.properties.NumericProperty;
 import pepse.world.trees.Log;
-import pepse.world.ui.TextualGameObject;
 import pepse.world.ui.VisualGameObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Avatar extends GameObject {
+public class Avatar extends GameObject implements Damagable {
 
     public static final Vector2 AVATAR_SIZE = new Vector2(50, 60);
 
     private static final int AVATAR_GRAVITY = 300;
+    private static final int AVATAR_SPEED = 300;
+
     private static final int AVATAR_FLIGHT_SPEED = 150;
 
     private static final double ENERGY_FACTOR = 0.5;
@@ -32,10 +31,10 @@ public class Avatar extends GameObject {
     private static final double MIN_ENERGY = 0;
     private static final double INITIAL_ENERGY = 100;
 
-    private static final double HEALTH_FACTOR = 1;
-    private static final double MAX_HEALTH = 3;
+    private static final double HEALTH_FACTOR = 0.5;
+    private static final double MAX_HEALTH = 100;
     private static final double MIN_HEALTH = 0;
-    private static final double INITIAL_HEALTH = 3;
+    private static final double INITIAL_HEALTH = 100;
 
     private static final String TAG = "avatar";
     private static final String TAG_ENERGY = "avatarEnergy";
@@ -71,7 +70,7 @@ public class Avatar extends GameObject {
 
         this.isFlying = false;
 
-        if(soundReader != null) {
+        if (soundReader != null) {
             this.initSounds(soundReader);
         }
 
@@ -102,7 +101,7 @@ public class Avatar extends GameObject {
     /**
      * Handles the avatar collision enter. We want to reset its velocity so it doesn't get out of bounds
      *
-     * @param other The GameObject with which a collision occurred.
+     * @param other     The GameObject with which a collision occurred.
      * @param collision Information regarding this collision.
      *                  A reasonable elastic behavior can be achieved with:
      *                  setVelocity(getVelocity().flipped(collision.getNormal()));
@@ -111,7 +110,7 @@ public class Avatar extends GameObject {
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
 
-        if(other instanceof Block && !(other instanceof Log)) {
+        if (other instanceof Block && !(other instanceof Log)) {
             this.setVelocity(this.getVelocity().multY(0));
         }
     }
@@ -123,17 +122,17 @@ public class Avatar extends GameObject {
         Vector2 direction = new Vector2(0, this.getVelocity().y());
 
         if (inputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
-            direction = direction.add(Vector2.LEFT.mult(AVATAR_GRAVITY));
+            direction = direction.add(Vector2.LEFT.mult(AVATAR_SPEED));
         }
 
         if (inputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            direction = direction.add(Vector2.RIGHT.mult(AVATAR_GRAVITY));
+            direction = direction.add(Vector2.RIGHT.mult(AVATAR_SPEED));
         }
 
         this.isFlying = false;
 
         if (inputListener.isKeyPressed(KeyEvent.VK_SPACE)) {
-            if(this.energy.getValue() > 0 && inputListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
+            if (this.energy.getValue() > 0 && inputListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
                 this.isFlying = true;
 //                flyingSound.play();
                 direction = new Vector2(direction.x(), -1 * (float) AVATAR_FLIGHT_SPEED);
@@ -156,16 +155,16 @@ public class Avatar extends GameObject {
             this.renderer().setIsFlippedHorizontally(this.getVelocity().x() < 0);
         }
 
-        if(this.getVelocity().y() != 0) {
+        if (this.getVelocity().y() != 0) {
             this.renderer().setRenderable(this.jumpAnimation);
             this.renderer().setIsFlippedHorizontally(this.getVelocity().x() < 0);
         }
 
-        if(this.getVelocity().x() == 0 && this.getVelocity().y() == 0) {
+        if (this.getVelocity().x() == 0 && this.getVelocity().y() == 0) {
             this.renderer().setRenderable(this.idleAnimation);
         }
 
-        if(this.isFlying) {
+        if (this.isFlying) {
             this.renderer().setRenderable(this.swimAnimation);
         }
     }
@@ -174,10 +173,10 @@ public class Avatar extends GameObject {
      * Handles the energy updates
      */
     private void handleEnergy() {
-        if(this.isFlying) {
+        if (this.isFlying) {
             this.energy.decrease();
         } else {
-            if(this.getVelocity().y() == 0) {
+            if (this.getVelocity().y() == 0) {
                 this.energy.increase();
             }
         }
@@ -187,7 +186,7 @@ public class Avatar extends GameObject {
     /**
      * Initializes all sounds
      *
-     * @param soundReader   Sound reader
+     * @param soundReader Sound reader
      */
     private void initSounds(SoundReader soundReader) {
         //this.flyingSound = soundReader.readSound("assets/soundtracks/mixkit-air-woosh-1489.wav");
@@ -196,7 +195,7 @@ public class Avatar extends GameObject {
     /**
      * Initializes all animations
      *
-     * @param imageReader   Image reader
+     * @param imageReader Image reader
      */
     private void initAnimations(ImageReader imageReader) {
         this.initAttackAnimation(imageReader);
@@ -210,7 +209,7 @@ public class Avatar extends GameObject {
     /**
      * Initializes the attack animation
      *
-     * @param imageReader   Image reader
+     * @param imageReader Image reader
      */
     private void initAttackAnimation(ImageReader imageReader) {
         Renderable[] attackAnimationRenderable = {
@@ -225,7 +224,7 @@ public class Avatar extends GameObject {
     /**
      * Initializes the idle animation
      *
-     * @param imageReader   Image reader
+     * @param imageReader Image reader
      */
     private void initIdleAnimation(ImageReader imageReader) {
         Renderable[] idleAnimationRenderable = {
@@ -241,7 +240,7 @@ public class Avatar extends GameObject {
     /**
      * Initializes the jump animation
      *
-     * @param imageReader   Image reader
+     * @param imageReader Image reader
      */
     private void initJumpAnimation(ImageReader imageReader) {
         Renderable[] jumpAnimationRenderable = {
@@ -257,7 +256,7 @@ public class Avatar extends GameObject {
     /**
      * Initializes the run animation
      *
-     * @param imageReader   Image reader
+     * @param imageReader Image reader
      */
     private void initRunAnimation(ImageReader imageReader) {
         Renderable[] runAnimationRenderable = {
@@ -273,9 +272,29 @@ public class Avatar extends GameObject {
     }
 
     /**
+     * Damages the avatar by a factor
+     *
+     * @param damage   Damage to deal to the avatar
+     */
+    @Override
+    public void damage(double damage) {
+        this.health.decrease(damage);
+    }
+
+    /**
+     * Heals the avatar by a factor
+     *
+     * @param heal   Number to heal to the avatar
+     */
+    @Override
+    public void heal(double heal) {
+        this.health.increase(heal);
+    }
+
+    /**
      * Initializes the swim animation
      *
-     * @param imageReader   Image reader
+     * @param imageReader Image reader
      */
     private void initSwimAnimation(ImageReader imageReader) {
         Renderable[] swimAnimationRenderable = {
@@ -290,18 +309,28 @@ public class Avatar extends GameObject {
         this.swimAnimation = new AnimationRenderable(swimAnimationRenderable, 0.2);
     }
 
+    /**
+     * Returns the avatar's health
+     *
+     * @return   Avatar's health
+     */
+    @Override
+    public double getHealth() {
+        return this.health.getValue();
+    }
+
 
     /**
      * Creates a basic avatar and all follow items
      *
-     * @param gameObjects     Collection of game objects to add the avatar to
-     * @param layer           Avatar's layer
-     * @param topLeftCorner   Top left corner of the avatar
-     * @param inputListener   Input listener object
-     * @param imageReader     Image reader object
-     * @return                Created avatar
+     * @param gameObjects   Collection of game objects to add the avatar to
+     * @param layer         Avatar's layer
+     * @param topLeftCorner Top left corner of the avatar
+     * @param inputListener Input listener object
+     * @param imageReader   Image reader object
+     * @return Created avatar
      */
-    public static GameObject create(GameObjectCollection gameObjects,
+    public static Avatar create(GameObjectCollection gameObjects,
                                     int layer, Vector2 topLeftCorner,
                                     UserInputListener inputListener,
                                     ImageReader imageReader) {
@@ -312,16 +341,16 @@ public class Avatar extends GameObject {
     /**
      * Creates an avatar and all follow items
      *
-     * @param gameObjects        Collection of game objects to add the avatar to
-     * @param layer              Avatar's layer
-     * @param topLeftCorner      Top left corner of the avatar
-     * @param inputListener      Input listener object
-     * @param imageReader        Image reader object
-     * @param soundReader        Sound reader object
-     * @param windowDimensions   Dimensions of the screen
-     * @return                   Created avatar
+     * @param gameObjects      Collection of game objects to add the avatar to
+     * @param layer            Avatar's layer
+     * @param topLeftCorner    Top left corner of the avatar
+     * @param inputListener    Input listener object
+     * @param imageReader      Image reader object
+     * @param soundReader      Sound reader object
+     * @param windowDimensions Dimensions of the screen
+     * @return Created avatar
      */
-    public static GameObject create(GameObjectCollection gameObjects,
+    public static Avatar create(GameObjectCollection gameObjects,
                                     int layer, Vector2 topLeftCorner,
                                     UserInputListener inputListener,
                                     ImageReader imageReader,
@@ -339,29 +368,39 @@ public class Avatar extends GameObject {
         gameObjects.addGameObject(avatar, layer);
 
 
-        final int UI_ELEMENT_SIZE = 30;
+        final int UI_ELEMENT_SIZE = 200;
 
         // Creates the energy renderer
-        Vector2 energyPosition = Vector2.ZERO.add(new Vector2(UI_ELEMENT_SIZE, UI_ELEMENT_SIZE));
-        Vector2 energyDimensions = Vector2.ONES.mult(UI_ELEMENT_SIZE);
+        Vector2 energyPosition = new Vector2(50,
+                windowDimensions.y() - 120);
 
-        GameObject energyObject = TextualGameObject.createTextualGameObject(gameObjects, energyPosition,
-                        energyDimensions, ColorSupplier.approximateColor(Color.BLACK),
-                (gameObject) -> ((TextRenderable)gameObject.renderer().getRenderable())
-                        .setString("Energy: " + energy.getValue()));
+        GameObject energyObject = VisualGameObject.createVisualGameObject(gameObjects, energyPosition,
+                Vector2.ZERO, Color.YELLOW, Color.GRAY,
+
+                (gameObject) -> {
+                    gameObject.setDimensions(
+                            Vector2.ONES.multX(energy.getValue().floatValue() * 2)
+                                    .multY(20));
+
+                    gameObject.setTopLeftCorner(energyPosition);
+        });
 
         energyObject.setTag(TAG_ENERGY);
 
         // Creates the health renderer
-        Vector2 healthPosition = new Vector2(UI_ELEMENT_SIZE * 2,
-                windowDimensions.y() - (UI_ELEMENT_SIZE * 2));
+        Vector2 healthPosition = new Vector2(50,
+                windowDimensions.y() - 80);
 
         GameObject healthObject = VisualGameObject.createVisualGameObject(gameObjects, healthPosition,
                 Vector2.ZERO, Color.RED, Color.GRAY,
 
-                (gameObject) -> gameObject.setDimensions(
-                        Vector2.ONES.multX((float) (UI_ELEMENT_SIZE * health.getValue()))
-                                .multY((float) UI_ELEMENT_SIZE)));
+                (gameObject) -> {
+                    gameObject.setDimensions(
+                            Vector2.ONES.multX(health.getValue().floatValue() * 2)
+                                    .multY(20));
+
+                    gameObject .setTopLeftCorner(healthPosition);
+                });
 
         healthObject.setTag(TAG_HEALTH);
 

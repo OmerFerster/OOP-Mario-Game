@@ -31,14 +31,18 @@ public class NumericProperty implements Property<Double> {
     }
 
     public void increase() {
-        if (this.current + factor <= max) {
-            this.current += factor;
-        }
+        this.current = Math.min(this.current + this.factor, this.max);
+    }
+
+    public void increase(double number) {
+        this.current = Math.min(this.current + number, this.max);
     }
 
     public void decrease() {
-        if (this.current - factor >= min) {
-            this.current -= factor;
-        }
+        this.current = Math.max(this.current - this.factor, this.min);
+    }
+
+    public void decrease(double number) {
+        this.current = Math.max(this.current - number, this.min);
     }
 }

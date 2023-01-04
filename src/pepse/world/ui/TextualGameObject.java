@@ -18,12 +18,12 @@ public class TextualGameObject {
     /**
      * Creates a textual game object and returns it
      *
-     * @param gameObjects     Game objects collection to add the created object to
-     * @param topLeftCornet   Top left corner to position the created object
-     * @param dimensions      Dimensions of the created object
-     * @param textColor       Text color of the created object
-     * @param callback        A callback used to update the object's renderable
-     * @return                Created textual ui object
+     * @param gameObjects   Game objects collection to add the created object to
+     * @param topLeftCornet Top left corner to position the created object
+     * @param dimensions    Dimensions of the created object
+     * @param textColor     Text color of the created object
+     * @param callback      A callback used to update the object's renderable
+     * @return Created textual ui object
      */
     public static GameObject createTextualGameObject(
             GameObjectCollection gameObjects, Vector2 topLeftCornet, Vector2 dimensions,

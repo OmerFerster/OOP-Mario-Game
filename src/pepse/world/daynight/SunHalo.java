@@ -19,11 +19,11 @@ public class SunHalo {
     /**
      * Creates a sun halo object
      *
-     * @param gameObjects   List of game objects to add the sun halo object to
-     * @param layer         Layer of the sun halo object
-     * @param sun           An object to follow
-     * @param color         The color of the halo
-     * @return              Created sun halo game object
+     * @param gameObjects List of game objects to add the sun halo object to
+     * @param layer       Layer of the sun halo object
+     * @param sun         An object to follow
+     * @param color       The color of the halo
+     * @return Created sun halo game object
      */
     public static GameObject create(GameObjectCollection gameObjects, int layer,
                                     GameObject sun, Color color) {

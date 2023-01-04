@@ -2,10 +2,15 @@ package pepse.util;
 
 import java.util.Objects;
 
+/**
+ * A generic class that holds a Pair of type T (a,b)
+ *
+ * @param <T> The generic type.
+ */
 public class Pair<T> {
 
-    private T a;
-    private T b;
+    private final T a;
+    private final T b;
 
     public Pair(T a, T b) {
         this.a = a;

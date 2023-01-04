@@ -22,11 +22,11 @@ public class Night {
     /**
      * Creates a night object
      *
-     * @param gameObjects        List of game objects to add the night object to
-     * @param layer              Layer of the night object
-     * @param windowDimensions   Window dimensions for the night object size
-     * @param cycleLength        The length of a full night cycle
-     * @return                   Created night game object
+     * @param gameObjects      List of game objects to add the night object to
+     * @param layer            Layer of the night object
+     * @param windowDimensions Window dimensions for the night object size
+     * @param cycleLength      The length of a full night cycle
+     * @return Created night game object
      */
     public static GameObject create(GameObjectCollection gameObjects, int layer,
                                     Vector2 windowDimensions, float cycleLength) {

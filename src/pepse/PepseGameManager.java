@@ -10,6 +10,7 @@ import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.entity.EntityManager;
 import pepse.world.trees.Tree;
 
 import java.awt.*;
@@ -33,7 +34,8 @@ public class PepseGameManager extends GameManager {
     private InfiniteWorldManager infiniteWorldManager;
     private Terrain terrain;
     private Tree tree;
-    private GameObject avatar;
+    private EntityManager entityManager;
+    private Avatar avatar;
 
     @Override
     public void run() {
@@ -43,14 +45,14 @@ public class PepseGameManager extends GameManager {
     /**
      * Initializes the game
      *
-     * @param imageReader Contains a single method: readImage, which reads an image from disk.
-     *                 See its documentation for help.
-     * @param soundReader Contains a single method: readSound, which reads a wav file from
-     *                    disk. See its documentation for help.
-     * @param inputListener Contains a single method: isKeyPressed, which returns whether
-     *                      a given key is currently pressed by the user or not. See its
-     *                      documentation.
-     * @param windowController Contains an array of helpful, self explanatory methods
+     * @param imageReader      Contains a single method: readImage, which reads an image from disk.
+     *                         See its documentation for help.
+     * @param soundReader      Contains a single method: readSound, which reads a wav file from
+     *                         disk. See its documentation for help.
+     * @param inputListener    Contains a single method: isKeyPressed, which returns whether
+     *                         a given key is currently pressed by the user or not. See its
+     *                         documentation.
+     * @param windowController Contains an array of helpful, self-explanatory methods
      *                         concerning the window.
      */
     @Override
@@ -69,12 +71,13 @@ public class PepseGameManager extends GameManager {
 
         this.createAvatar();
 
+        this.createEnteties();
+
         this.initInfiniteWorldManager();
 
         this.initLayerCollisions();
 
-        ///////////////////
-        //this.initialSound();  // todo check later
+        // this.initialSound();  // TODO check later.
     }
 
     /**
@@ -138,12 +141,17 @@ public class PepseGameManager extends GameManager {
                 this.windowController.getWindowDimensions()));
     }
 
+    private void createEnteties() {
+        this.entityManager = new EntityManager(this.gameObjects(), Layer.DEFAULT,
+                this.terrain::groundHeightAt, this.avatar, this.imageReader);
+    }
+
     /**
      * Initializes the infinite world manager
      */
     private void initInfiniteWorldManager() {
         this.infiniteWorldManager = new InfiniteWorldManager(this.gameObjects(),
-                this.windowDimensions, this.terrain, this.tree);
+                this.windowDimensions, this.terrain, this.tree, this.entityManager);
     }
 
     /**
@@ -154,7 +162,7 @@ public class PepseGameManager extends GameManager {
         this.gameObjects().layers().shouldLayersCollide(LEAVES_LAYER,
                 COLLIDABLE_TERRAIN_LAYER, true);
 
-        // Making default objects (player) collide with terrain
+        // Making default objects (player, entities) collide with terrain
         this.gameObjects().layers().shouldLayersCollide(Layer.DEFAULT,
                 COLLIDABLE_TERRAIN_LAYER, true);
 

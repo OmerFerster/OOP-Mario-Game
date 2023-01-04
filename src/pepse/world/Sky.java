@@ -14,6 +14,14 @@ public class Sky {
 
     private static final String TAG = "sky";
 
+    /**
+     * Creates a sky object
+     *
+     * @param gameObjects      List of game objects to add the night object to
+     * @param windowDimensions Window dimensions for the night object size
+     * @param skyLayer         The Layer of a sky
+     * @return Created sky game object
+     */
     public static GameObject create(GameObjectCollection gameObjects,
                                     Vector2 windowDimensions, int skyLayer) {
         GameObject sky = new GameObject(Vector2.ZERO,

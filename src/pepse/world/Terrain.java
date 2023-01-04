@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * A class that handles the creation of terrain within the game
  */
-public class Terrain {
+public class Terrain implements Creator {
 
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
 
@@ -51,8 +51,8 @@ public class Terrain {
     /**
      * Returns the ground height at a certain point
      *
-     * @param x   Point to return its height
-     * @return    Height at X
+     * @param x Point to return its height
+     * @return Height at X
      */
     public float groundHeightAt(float x) {
         return this.groundHeightAtX0 +
@@ -62,8 +62,8 @@ public class Terrain {
     /**
      * Creates the ground terrain in a given range
      *
-     * @param minX   Range starting point
-     * @param maxX   Range ending point
+     * @param minX Range starting point
+     * @param maxX Range ending point
      */
     public void createInRange(int minX, int maxX) {
         this.createInRangeAndReturn(minX, maxX);
@@ -72,10 +72,11 @@ public class Terrain {
     /**
      * Creates the ground terrain in a given range and returns a list of created game objects
      *
-     * @param minX   Range starting point
-     * @param maxX   Range ending point
-     * @return       All game objects created within the given range
+     * @param minX Range starting point
+     * @param maxX Range ending point
+     * @return All game objects created within the given range
      */
+    @Override
     public List<GameObject> createInRangeAndReturn(int minX, int maxX) {
         List<GameObject> createdObjects = new ArrayList<>();
 
@@ -100,10 +101,10 @@ public class Terrain {
     /**
      * Creates a single block at the given coordinates
      *
-     * @param depth   Depth of the block
-     * @param x       Block X
-     * @param y       Block Y
-     * @return        Created block
+     * @param depth Depth of the block
+     * @param x     Block X
+     * @param y     Block Y
+     * @return Created block
      */
     private Block createBlock(int depth, float x, float y) {
         RectangleRenderable renderableBlock = new RectangleRenderable(

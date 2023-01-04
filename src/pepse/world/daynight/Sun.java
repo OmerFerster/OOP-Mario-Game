@@ -8,7 +8,6 @@ import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * A class that handles the creation of sun objects
@@ -26,11 +25,11 @@ public class Sun {
     /**
      * Creates a sun object
      *
-     * @param gameObjects        List of game objects to add the sun object to
-     * @param layer              Layer of the sun object
-     * @param windowDimensions   Window dimensions for the sun object size
-     * @param cycleLength        The length of a full day cycle
-     * @return                   Created sun game object
+     * @param gameObjects      List of game objects to add the sun object to
+     * @param layer            Layer of the sun object
+     * @param windowDimensions Window dimensions for the sun object size
+     * @param cycleLength      The length of a full day cycle
+     * @return Created sun game object
      */
     public static GameObject create(GameObjectCollection gameObjects, int layer,
                                     Vector2 windowDimensions, float cycleLength) {
