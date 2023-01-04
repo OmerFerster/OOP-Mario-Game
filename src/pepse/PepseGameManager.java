@@ -24,6 +24,7 @@ public class PepseGameManager extends GameManager {
     private static final int TERRAIN_LAYER = COLLIDABLE_TERRAIN_LAYER - 1;
     private static final int LOGS_LAYER = Layer.FOREGROUND;
     private static final int LEAVES_LAYER = Layer.FOREGROUND + 1;
+    private static final String LOOSING_STRING = "You Lost! Play again?";
 
     private Vector2 windowDimensions;
     private WindowController windowController;
@@ -93,6 +94,22 @@ public class PepseGameManager extends GameManager {
 
         if (this.infiniteWorldManager != null) {
             this.infiniteWorldManager.checkWorld((int) this.avatar.getCenter().x());
+        }
+
+        if (avatar.getHealth() == 0) {
+            askRestart();
+        }
+
+    }
+
+    /**
+     * The function ask the user if he wants to restart another game or not
+     */
+    private void askRestart() {
+        if (windowController.openYesNoDialog(LOOSING_STRING)) {
+            windowController.resetGame();
+        } else {
+            windowController.closeWindow();
         }
     }
 
