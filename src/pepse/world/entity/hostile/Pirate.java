@@ -19,6 +19,7 @@ public class Pirate extends AIEntity implements IHostile {
     public static final Vector2 PIRATE_SIZE = new Vector2(65, 80);
 
     private static final String TAG = "pirate";
+    private static final int FIX = 30;
 
     private final IDamagable target;
 
@@ -31,7 +32,7 @@ public class Pirate extends AIEntity implements IHostile {
     private Renderable attackAnimation;
 
     public Pirate(Vector2 bottomLeftCorner, ImageReader imageReader, IDamagable target) {
-        super(bottomLeftCorner.add(new Vector2(0, - PIRATE_SIZE.y())), PIRATE_SIZE, imageReader);
+        super(bottomLeftCorner.add(new Vector2(0, -PIRATE_SIZE.y() - FIX)), PIRATE_SIZE, imageReader);
 
         this.setTag(TAG);
 
@@ -53,7 +54,7 @@ public class Pirate extends AIEntity implements IHostile {
     /**
      * Handles the attack phase
      *
-     * @param other The former collision partner.
+     * @param other     The former collision partner.
      * @param collision collision object
      */
     @Override
@@ -62,7 +63,7 @@ public class Pirate extends AIEntity implements IHostile {
 
         // If the entity is still moving in a certain direction, and it didn't end its
         // movement, keep going
-        if(this.attackDelayLeft > 0) {
+        if (this.attackDelayLeft > 0) {
             this.isAttacking = false;
 
             this.attackDelayLeft--;
@@ -176,7 +177,7 @@ public class Pirate extends AIEntity implements IHostile {
     /**
      * Amount to damage once the entity attacks
      *
-     * @return   Amount to damage
+     * @return Amount to damage
      */
     @Override
     public double attackDamage() {

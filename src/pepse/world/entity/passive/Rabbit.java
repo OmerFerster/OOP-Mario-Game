@@ -16,12 +16,13 @@ public class Rabbit extends AIEntity implements IPassive {
     private static final Vector2 RABBIT_SIZE = new Vector2(40, 60);
 
     private static final String TAG = "animal";
+    private static final int FIX = 30;
 
     private Renderable idleAnimation;
     private Renderable runAnimation;
 
     public Rabbit(Vector2 bottomLeftCorner, ImageReader imageReader) {
-        super(bottomLeftCorner.add(new Vector2(0, - RABBIT_SIZE.y())), RABBIT_SIZE, imageReader);
+        super(bottomLeftCorner.add(new Vector2(0, -RABBIT_SIZE.y() - FIX)), RABBIT_SIZE, imageReader);
 
         this.setTag(TAG);
     }
@@ -32,7 +33,7 @@ public class Rabbit extends AIEntity implements IPassive {
      */
     @Override
     protected void updateAnimations() {
-        if(super.isMoving && this.getVelocity().x() != 0) {
+        if (super.isMoving && this.getVelocity().x() != 0) {
             this.renderer().setRenderable(this.runAnimation);
             this.renderer().setIsFlippedHorizontally(this.getVelocity().x() < 0);
         } else {
@@ -90,7 +91,7 @@ public class Rabbit extends AIEntity implements IPassive {
     /**
      * Amount to heal once the entity dies
      *
-     * @return   Amount to heal
+     * @return Amount to heal
      */
     @Override
     public double healValue() {

@@ -5,34 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7705b4c-e74a-43ae-a748-3e35714f65cc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pepse/util/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/IDamagable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/ai/AIEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/hostile/IHostile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pepse/world/entity/passive/IPassive.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/util/FloatCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/callbacks/FloatCallback.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/util/UIGameObjectCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/callbacks/UIGameObjectCallback.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/util/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/FloatCallback.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Creator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Damagable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/Animal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/Pirate.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pepse/world/Avatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Avatar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Creator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/IWorldGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Damagable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Terrain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/daynight/Night.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/daynight/Night.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/daynight/Sun.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/daynight/Sun.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/Animal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/passive/Rabbit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/EntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/EntityManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/Pirate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/hostile/Pirate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/properties/NumericProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/properties/NumericProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/properties/Property.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/properties/IProperty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/trees/Leaf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/trees/Leaf.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/trees/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/trees/Tree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/hostile/Pirate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/hostile/Pirate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/passive/Rabbit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/passive/Rabbit.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,6 +109,7 @@
       <workItem from="1672845988827" duration="3620000" />
       <workItem from="1672852159063" duration="709000" />
       <workItem from="1672876897190" duration="8235000" />
+      <workItem from="1672911184892" duration="605000" />
     </task>
     <servers />
   </component>

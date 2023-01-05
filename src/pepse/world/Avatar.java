@@ -28,6 +28,7 @@ public class Avatar extends Entity {
     private static final Vector2 AVATAR_SIZE = new Vector2(50, 60);
 
     private static final String TAG = "avatar";
+    private static final int FIX = 30;
 
     private final UserInputListener inputListener;
     private final NumericProperty energy;
@@ -44,7 +45,7 @@ public class Avatar extends Entity {
     public Avatar(Vector2 bottomLeftCorner, Vector2 dimensions,
                   ImageReader imageReader, UserInputListener inputListener,
                   NumericProperty energy) {
-        super(bottomLeftCorner.add(new Vector2(0, - AVATAR_SIZE.y())), dimensions, imageReader);
+        super(bottomLeftCorner.add(new Vector2(0, -AVATAR_SIZE.y() - FIX)), dimensions, imageReader);
 
         this.setTag(TAG);
 
@@ -83,14 +84,14 @@ public class Avatar extends Entity {
      * Handles the avatar collision stay. We want to kill damagable entities for as long as we
      * stay in collision with them.
      *
-     * @param other       The collision partner.
-     * @param collision   Information regarding this collision.
+     * @param other     The collision partner.
+     * @param collision Information regarding this collision.
      */
     @Override
     public void onCollisionStay(GameObject other, Collision collision) {
         super.onCollisionStay(other, collision);
 
-        if(other instanceof IDamagable && this.isAttacking) {
+        if (other instanceof IDamagable && this.isAttacking) {
             ((IDamagable) other).kill();
 
             // If the entity killed was healable, heal the player with 30hp
@@ -287,7 +288,7 @@ public class Avatar extends Entity {
      * @param bottomLeftCorner Bottom left corner of the avatar
      * @param inputListener    Input listener object
      * @param imageReader      Image reader object
-     * @return                 Created avatar
+     * @return Created avatar
      */
     public static Avatar create(GameObjectCollection gameObjects,
                                 int layer, Vector2 bottomLeftCorner,
@@ -300,13 +301,13 @@ public class Avatar extends Entity {
     /**
      * Creates an avatar and all follow items
      *
-     * @param gameObjects         Collection of game objects to add the avatar to
-     * @param layer               Avatar's layer
-     * @param bottomLeftCorner    Bottom left corner of the avatar
-     * @param inputListener       Input listener object
-     * @param imageReader         Image reader object
-     * @param windowDimensions    Dimensions of the screen
-     * @return                    Created avatar
+     * @param gameObjects      Collection of game objects to add the avatar to
+     * @param layer            Avatar's layer
+     * @param bottomLeftCorner Bottom left corner of the avatar
+     * @param inputListener    Input listener object
+     * @param imageReader      Image reader object
+     * @param windowDimensions Dimensions of the screen
+     * @return Created avatar
      */
     public static Avatar create(GameObjectCollection gameObjects,
                                 int layer, Vector2 bottomLeftCorner,
@@ -343,13 +344,13 @@ public class Avatar extends Entity {
     /**
      * Updates a progress bar attached to the given property
      *
-     * @param gameObject   Bar to update
-     * @param position     Bar top left position
-     * @param property     Property to control bar fullness
+     * @param gameObject Bar to update
+     * @param position   Bar top left position
+     * @param property   Property to control bar fullness
      */
     private static void updateBar(GameObject gameObject, Vector2 position, NumericProperty property) {
         gameObject.setDimensions(Vector2.ONES.multX(property.getValue().floatValue() * 2)
-                        .multY(Constants.BAR_HEIGHT));
+                .multY(Constants.BAR_HEIGHT));
 
         gameObject.setTopLeftCorner(position);
     }
