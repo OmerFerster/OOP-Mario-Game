@@ -7,6 +7,7 @@ import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
+import pepse.util.Constants;
 import pepse.world.Block;
 
 import java.awt.*;
@@ -20,18 +21,9 @@ public class Leaf extends Block {
     private static final Random random = new Random();
     private static final Color LEAF_COLOR = new Color(50, 150, 50);
 
-    private static final int FADE_LENGTH = 5;
-    private static final float LEAF_MASS = 1.0f;
-    private static final float LEAF_X_VELOCITY = 30;
-    private static final float LEAF_Y_VELOCITY = 100;
-
-    private static final float ANGLE_TRANSITION_STARTING_VALUE = -2 * (float) Math.PI;
-    private static final float ANGLE_TRANSITION_ENDING_VALUE = 2 * (float) Math.PI;
-    private static final float SIZE_TRANSITION_STARTING_VALUE = 1.0f;
-    private static final float SIZE_TRANSITION_ENDING_VALUE = 0.95f;
-    private static final float TRANSITIONS_CYCLE_LENGTH = 0.4f;
-
     private static final String TAG = "leaf";
+
+    private static final float LEAF_MASS = 1.0f;
 
     private final Vector2 initialPosition;
 
@@ -54,73 +46,6 @@ public class Leaf extends Block {
         // Starting the leaf falling animation after a random time
         randomTime = random.nextInt(3);
         new ScheduledTask(this, randomTime, false, this::startLeafAnimation);
-    }
-
-    /**
-     * Starts the leaf wind transition while on the tree.
-     * These transitions are changing the angle and size of the leaf
-     */
-    private void initLeafTransitions() {
-        new Transition<>(
-                this,
-                this.renderer()::setRenderableAngle,
-                ANGLE_TRANSITION_STARTING_VALUE,
-                ANGLE_TRANSITION_ENDING_VALUE,
-                Transition.CUBIC_INTERPOLATOR_FLOAT,
-                TRANSITIONS_CYCLE_LENGTH,
-                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
-                null);
-
-        new Transition<>(
-                this,
-                (factor) -> this.setDimensions(new Vector2(Block.SIZE, Block.SIZE).mult(factor)),
-                SIZE_TRANSITION_STARTING_VALUE,
-                SIZE_TRANSITION_ENDING_VALUE,
-                Transition.CUBIC_INTERPOLATOR_FLOAT,
-                TRANSITIONS_CYCLE_LENGTH,
-                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
-                null);
-    }
-
-    /**
-     * Starts the leaf animation.
-     * It repositions the leaf and sets all the initial values
-     * Then randomly selects a time (10-20) when the fall would start falling and fading
-     * and calls #startFade
-     */
-    private void startLeafAnimation() {
-        // Re-positioning the leaf
-        this.setTopLeftCorner(this.initialPosition);
-        this.renderer().fadeIn(FADE_LENGTH);
-        this.setVelocity(Vector2.ZERO);
-
-        int randomLifeTime = random.nextInt(11) + 10;
-        new ScheduledTask(this, randomLifeTime, false, this::startFade);
-    }
-
-    /**
-     * Starts the leaf falling animation.
-     * It adds a wind transition, then randomly selects a time (2-10), when the leaf
-     * would return to its origin position by calling #startLeafAnimation
-     */
-    private void startFade() {
-        this.fallingTransition = new Transition<>(
-                this,
-                this.transform()::setVelocityX,
-                -1 * LEAF_X_VELOCITY,
-                LEAF_X_VELOCITY,
-                Transition.CUBIC_INTERPOLATOR_FLOAT,
-                1f,
-                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
-                null);
-
-        this.transform().setVelocityY(LEAF_Y_VELOCITY);
-
-        int randomDeathTime = random.nextInt(9) + 2;
-
-        this.renderer().fadeOut(FADE_LENGTH, () ->
-                new ScheduledTask(this,
-                        randomDeathTime, false, this::startLeafAnimation));
     }
 
 
@@ -158,5 +83,75 @@ public class Leaf extends Block {
         if (this.transform().getVelocity().y() == 0) {
             this.transform().setVelocity(Vector2.ZERO);
         }
+    }
+
+
+    /**
+     * Starts the leaf wind transition while on the tree.
+     * These transitions are changing the angle and size of the leaf
+     */
+    private void initLeafTransitions() {
+        new Transition<>(
+                this,
+                this.renderer()::setRenderableAngle,
+                Constants.LEAF_ANGLE_TRANSITION_STARTING_VALUE,
+                Constants.LEAF_ANGLE_TRANSITION_ENDING_VALUE,
+                Transition.CUBIC_INTERPOLATOR_FLOAT,
+                Constants.LEAF_TRANSITIONS_CYCLE_LENGTH,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
+
+        new Transition<>(
+                this,
+                (factor) -> this.setDimensions(new Vector2(Block.SIZE, Block.SIZE).mult(factor)),
+                Constants.LEAF_SIZE_TRANSITION_STARTING_VALUE,
+                Constants.LEAF_SIZE_TRANSITION_ENDING_VALUE,
+                Transition.CUBIC_INTERPOLATOR_FLOAT,
+                Constants.LEAF_TRANSITIONS_CYCLE_LENGTH,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
+    }
+
+
+    /**
+     * Starts the leaf animation.
+     * It repositions the leaf and sets all the initial values
+     * Then randomly selects a time (10-20) when the fall would start falling and fading
+     * and calls #startFade
+     */
+    private void startLeafAnimation() {
+        // Re-positioning the leaf
+        this.setTopLeftCorner(this.initialPosition);
+        this.renderer().fadeIn(Constants.LEAF_FADE_LENGTH);
+        this.setVelocity(Vector2.ZERO);
+
+        // Start the falling & fading animation after a random time
+        int randomLifeTime = random.nextInt(11) + 10;
+        new ScheduledTask(this, randomLifeTime, false, this::startFade);
+    }
+
+    /**
+     * Starts the leaf falling animation.
+     * It adds a wind transition, then randomly selects a time (2-10), when the leaf
+     * would return to its origin position by calling #startLeafAnimation
+     */
+    private void startFade() {
+        this.fallingTransition = new Transition<>(
+                this,
+                this.transform()::setVelocityX,
+                -1 * Constants.LEAF_X_VELOCITY,
+                Constants.LEAF_X_VELOCITY,
+                Transition.CUBIC_INTERPOLATOR_FLOAT,
+                1f,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
+
+        this.transform().setVelocityY(Constants.LEAF_Y_VELOCITY);
+
+        int randomDeathTime = random.nextInt(9) + 2;
+
+        this.renderer().fadeOut(Constants.LEAF_FADE_LENGTH, () ->
+                new ScheduledTask(this,
+                        randomDeathTime, false, this::startLeafAnimation));
     }
 }

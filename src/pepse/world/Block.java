@@ -4,13 +4,14 @@ import danogl.GameObject;
 import danogl.components.GameObjectPhysics;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.util.Constants;
 
 /**
  * A class that represents a single block game object
  */
 public class Block extends GameObject {
 
-    public static final int SIZE = 30;
+    public static final int SIZE = Constants.BLOCK_SIZE;
 
     private static final String TAG = "block";
 

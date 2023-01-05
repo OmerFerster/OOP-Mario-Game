@@ -3,19 +3,19 @@ package pepse.world.trees;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.util.Vector2;
-import pepse.util.FloatCallback;
+
+import pepse.util.Constants;
+import pepse.util.callbacks.FloatCallback;
 import pepse.util.Utils;
 import pepse.world.Block;
-import pepse.world.Creator;
+import pepse.world.IWorldGenerator;
 
 import java.util.*;
 
 /**
  * A class that handles the creation of trees within the game
  */
-public class Tree implements Creator {
-
-    private static final int LEAFS_GRID_SIZE = 5;
+public class Tree implements IWorldGenerator {
 
     private final GameObjectCollection gameObjects;
     private final Vector2 windowDimensions;
@@ -41,6 +41,7 @@ public class Tree implements Creator {
         this.callback = callback;
     }
 
+
     /**
      * Creates the trees terrain in a given range
      *
@@ -62,6 +63,7 @@ public class Tree implements Creator {
     public List<GameObject> createInRangeAndReturn(int minX, int maxX) {
         List<GameObject> createdObjects = new ArrayList<>();
 
+        // Creating a random with a specific seed to be able to regenerate the same chunk
         this.random = new Random(Objects.hash(minX, maxX));
 
         minX = Utils.round(minX, Block.SIZE);
@@ -79,6 +81,7 @@ public class Tree implements Creator {
 
         return createdObjects;
     }
+
 
     /**
      * Creates a single tree
@@ -108,11 +111,13 @@ public class Tree implements Creator {
      */
     private void createLeaves(List<GameObject> createdObjects,
                               float xLocation, float height, int treeHeight) {
-        int startX = (int) xLocation - (Block.SIZE * (LEAFS_GRID_SIZE / 2));
-        int endX = (int) xLocation + Block.SIZE + (Block.SIZE * (LEAFS_GRID_SIZE / 2));
-        int startY = (int) (height - treeHeight * Block.SIZE) - (Block.SIZE * (LEAFS_GRID_SIZE / 2));
+        int startX = (int) xLocation - (Block.SIZE * (Constants.LEAFS_GRID_SIZE / 2));
+        int endX = (int) xLocation + Block.SIZE + (Block.SIZE * (Constants.LEAFS_GRID_SIZE / 2));
+
+        int startY = (int) (height - treeHeight * Block.SIZE) -
+                (Block.SIZE * (Constants.LEAFS_GRID_SIZE / 2));
         int endY = (int) (height - treeHeight * Block.SIZE) + Block.SIZE +
-                (Block.SIZE * (LEAFS_GRID_SIZE / 2));
+                (Block.SIZE * (Constants.LEAFS_GRID_SIZE / 2));
 
         for (int i = startX; i < endX; i += Block.SIZE) {
             for (int j = startY; j < endY; j += Block.SIZE) {

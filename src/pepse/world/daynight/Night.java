@@ -6,6 +6,7 @@ import danogl.components.CoordinateSpace;
 import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
+import pepse.util.Constants;
 
 import java.awt.*;
 
@@ -13,9 +14,6 @@ import java.awt.*;
  * A class that handles the creation of night objects
  */
 public class Night {
-
-    private static final float MIDNIGHT_OPACITY = 0.5f;
-    private static final float STARTING_OPACITY = 0f;
 
     private static final String TAG = "night";
 
@@ -42,8 +40,8 @@ public class Night {
         new Transition<>(
                 night,
                 night.renderer()::setOpaqueness,
-                STARTING_OPACITY,
-                MIDNIGHT_OPACITY,
+                Constants.MIDDAY_NIGHT_OPACITY,
+                Constants.MIDNIGHT_NIGHT_OPACITY,
                 Transition.CUBIC_INTERPOLATOR_FLOAT,
                 cycleLength / 2,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,

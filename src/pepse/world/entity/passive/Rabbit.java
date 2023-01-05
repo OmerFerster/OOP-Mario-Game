@@ -1,25 +1,35 @@
-package pepse.world.entity;
+package pepse.world.entity.passive;
 
 import danogl.gui.ImageReader;
 import danogl.gui.rendering.AnimationRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
-public class Animal extends Entity {
+import pepse.util.Constants;
+import pepse.world.entity.ai.AIEntity;
 
-    public static final Vector2 ANIMAL_SIZE = new Vector2(50, 60);
+/**
+ * A class that represents the passive entity: rabbit
+ */
+public class Rabbit extends AIEntity implements IPassive {
+
+    private static final Vector2 RABBIT_SIZE = new Vector2(40, 60);
 
     private static final String TAG = "animal";
 
     private Renderable idleAnimation;
     private Renderable runAnimation;
 
-    public Animal(Vector2 topLeftCorner, ImageReader imageReader) {
-        super(topLeftCorner, ANIMAL_SIZE, imageReader);
+    public Rabbit(Vector2 bottomLeftCorner, ImageReader imageReader) {
+        super(bottomLeftCorner.add(new Vector2(0, - RABBIT_SIZE.y())), RABBIT_SIZE, imageReader);
 
         this.setTag(TAG);
     }
 
+
+    /**
+     * Handles the rabbit animation
+     */
     @Override
     protected void updateAnimations() {
         if(super.isMoving && this.getVelocity().x() != 0) {
@@ -30,6 +40,11 @@ public class Animal extends Entity {
         }
     }
 
+    /**
+     * Initializes all animations
+     *
+     * @param imageReader Image reader
+     */
     @Override
     public void initAnimations(ImageReader imageReader) {
         this.initIdleAnimation(imageReader);
@@ -37,6 +52,11 @@ public class Animal extends Entity {
     }
 
 
+    /**
+     * Initializes the idle animation
+     *
+     * @param imageReader Image reader
+     */
     private void initIdleAnimation(ImageReader imageReader) {
         Renderable[] idleAnimationRenderable = {
                 imageReader.readImage("assets/rabbit/idle1.png", true),
@@ -48,6 +68,11 @@ public class Animal extends Entity {
         this.idleAnimation = new AnimationRenderable(idleAnimationRenderable, 0.2);
     }
 
+    /**
+     * Initializes the run animation
+     *
+     * @param imageReader Image reader
+     */
     private void initRunAnimation(ImageReader imageReader) {
         Renderable[] runAnimationRenderable = {
                 imageReader.readImage("assets/rabbit/run1.png", true),
@@ -59,5 +84,16 @@ public class Animal extends Entity {
         };
 
         this.runAnimation = new AnimationRenderable(runAnimationRenderable, 0.2);
+    }
+
+
+    /**
+     * Amount to heal once the entity dies
+     *
+     * @return   Amount to heal
+     */
+    @Override
+    public double healValue() {
+        return Constants.RABBIT_HEAL_VALUE;
     }
 }

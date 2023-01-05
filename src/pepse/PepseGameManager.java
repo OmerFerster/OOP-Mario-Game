@@ -6,25 +6,24 @@ import danogl.collisions.Layer;
 import danogl.gui.*;
 import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
+
+import pepse.util.Constants;
 import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.entity.Entity;
 import pepse.world.entity.EntityManager;
 import pepse.world.trees.Tree;
 
 import java.awt.*;
 
+/**
+ * The entry class for the Pepse game
+ */
 public class PepseGameManager extends GameManager {
 
-    private static final int SUN_LAYER = Layer.BACKGROUND + 1;
-    private static final int SUN_HALO_LAYER = SUN_LAYER + 1;
-
-    private static final int COLLIDABLE_TERRAIN_LAYER = Layer.STATIC_OBJECTS;
-    private static final int TERRAIN_LAYER = COLLIDABLE_TERRAIN_LAYER - 1;
-    private static final int LOGS_LAYER = Layer.FOREGROUND;
-    private static final int LEAVES_LAYER = Layer.FOREGROUND + 1;
-    private static final String LOOSING_STRING = "You Lost! Play again?";
+    private static final String YOU_LOST_MESSAGE = "You Lost! Want to play again?";
 
     private Vector2 windowDimensions;
     private WindowController windowController;
@@ -32,15 +31,17 @@ public class PepseGameManager extends GameManager {
     private ImageReader imageReader;
 
     private InfiniteWorldManager infiniteWorldManager;
-    private Terrain terrain;
-    private Tree tree;
-    private EntityManager entityManager;
-    private Avatar avatar;
+    private Terrain terrainGenerator;
+    private Tree treeGenerator;
+    private EntityManager entityGenerator;
+
+    private Entity avatar;
 
     @Override
     public void run() {
         super.run();
     }
+
 
     /**
      * Initializes the game
@@ -67,19 +68,17 @@ public class PepseGameManager extends GameManager {
 
         this.createBackground();
         this.createTerrain();
-
+        this.createEntities();
         this.createAvatar();
 
-        this.createEntities();
-
         this.initInfiniteWorldManager();
-
         this.initLayerCollisions();
-
     }
+
 
     /**
      * Updates the world if needed, so a feeling of infinite world is given
+     * Also, checks if the avatar's health is 0. If so, it ends the game
      *
      * @param deltaTime The time, in seconds, that passed since the last invocation
      *                  of this method (i.e., since the last frame). This is useful
@@ -93,23 +92,15 @@ public class PepseGameManager extends GameManager {
         super.update(deltaTime);
 
         if (this.infiniteWorldManager != null) {
-            this.infiniteWorldManager.checkWorld((int) this.avatar.getCenter().x());
+            try {
+                this.infiniteWorldManager.checkWorld((int) this.avatar.getCenter().x());
+            } catch(InfiniteWorldManager.ChunkException exception) {
+                System.err.println(exception.getMessage());
+            }
         }
 
-        if (avatar.getHealth() == 0) {
-            askRestart();
-        }
-
-    }
-
-    /**
-     * The function ask the user if he wants to restart another game or not
-     */
-    private void askRestart() {
-        if (windowController.openYesNoDialog(LOOSING_STRING)) {
-            windowController.resetGame();
-        } else {
-            windowController.closeWindow();
+        if (this.avatar.isDead()) {
+            this.restartGame();
         }
     }
 
@@ -120,30 +111,40 @@ public class PepseGameManager extends GameManager {
     private void createBackground() {
         Sky.create(this.gameObjects(), this.windowDimensions, Layer.BACKGROUND);
 
-        Night.create(this.gameObjects(), Layer.FOREGROUND, windowDimensions, 30.0f);
+        GameObject night = Night.create(this.gameObjects(),
+                Constants.OBJECT_LAYER.NIGHT_SKY.getLayer(),
+                this.windowDimensions, Constants.DAY_CYCLE_LENGTH);
 
-        GameObject sun = Sun.create(this.gameObjects(), SUN_LAYER, windowDimensions, 30.0f);
-        SunHalo.create(this.gameObjects(), SUN_HALO_LAYER, sun, new Color(255, 255, 0, 20));
+        GameObject sun = Sun.create(this.gameObjects(),
+                Constants.OBJECT_LAYER.SUN.getLayer(),
+                this.windowDimensions, Constants.DAY_CYCLE_LENGTH);
+
+        GameObject halo = SunHalo.create(this.gameObjects(),
+                Constants.OBJECT_LAYER.SUN_HALO.getLayer(),
+                sun, new Color(255, 255, 0, 20));
     }
 
     /**
      * Creates the terrain scene: ground and trees
      */
     private void createTerrain() {
-        this.terrain = new Terrain(this.gameObjects(), COLLIDABLE_TERRAIN_LAYER,
-                TERRAIN_LAYER, windowDimensions, 30);
+        this.terrainGenerator = new Terrain(this.gameObjects(),
+                Constants.OBJECT_LAYER.COLLIDABLE_TERRAIN.getLayer(),
+                Constants.OBJECT_LAYER.TERRAIN.getLayer(),
+                this.windowDimensions, Constants.GAME_SEED);
 
-        this.tree = new Tree(this.gameObjects(), LOGS_LAYER, LEAVES_LAYER,
-                windowDimensions, terrain::groundHeightAt);
+        this.treeGenerator = new Tree(this.gameObjects(),
+                Constants.OBJECT_LAYER.LOG.getLayer(),
+                Constants.OBJECT_LAYER.LEAF.getLayer(),
+                this.windowDimensions, this.terrainGenerator::groundHeightAt);
     }
 
     /**
      * Creates the game's avatar and sets the camera to follow it
      */
     private void createAvatar() {
-        float avatarX = (this.windowDimensions.x() / 2) - (Avatar.AVATAR_SIZE.x() / 2);
-        float avatarY = this.terrain.groundHeightAt(avatarX);
-        avatarY = (avatarY - avatarY % Block.SIZE) - Avatar.AVATAR_SIZE.y();
+        float avatarX = this.windowDimensions.x() / 2;
+        float avatarY = this.terrainGenerator.groundHeightAt(avatarX);
 
         this.avatar = Avatar.create(this.gameObjects(), Layer.DEFAULT,
                 new Vector2(avatarX, avatarY),
@@ -155,36 +156,58 @@ public class PepseGameManager extends GameManager {
                 this.windowController.getWindowDimensions()));
     }
 
+    /**
+     * Creates the entity manager to create entities across the world
+     */
     private void createEntities() {
-        this.entityManager = new EntityManager(this.gameObjects(), Layer.DEFAULT,
-                this.terrain::groundHeightAt, this.avatar, this.imageReader);
+        this.entityGenerator = new EntityManager(this.gameObjects(), Layer.DEFAULT,
+                this.avatar, this.imageReader, this.terrainGenerator::groundHeightAt);
     }
+
 
     /**
      * Initializes the infinite world manager
      */
     private void initInfiniteWorldManager() {
-        this.infiniteWorldManager = new InfiniteWorldManager(this.gameObjects(),
-                this.windowDimensions, this.terrain, this.tree, this.entityManager);
+        this.infiniteWorldManager = new InfiniteWorldManager(this.gameObjects(), this.windowDimensions,
+                this.terrainGenerator, this.treeGenerator, this.entityGenerator);
     }
 
     /**
      * Initializes collision between layers
      */
     private void initLayerCollisions() {
-        // Making trees collide with terrain
-        this.gameObjects().layers().shouldLayersCollide(LEAVES_LAYER,
-                COLLIDABLE_TERRAIN_LAYER, true);
+        // Making leaves collide with terrain
+        this.gameObjects().layers().shouldLayersCollide(
+                Constants.OBJECT_LAYER.LEAF.getLayer(),
+                Constants.OBJECT_LAYER.COLLIDABLE_TERRAIN.getLayer(),
+                true);
 
-        // Making default objects (player, entities) collide with terrain
-        this.gameObjects().layers().shouldLayersCollide(Layer.DEFAULT,
-                COLLIDABLE_TERRAIN_LAYER, true);
+        // Making entities collide with terrain
+        this.gameObjects().layers().shouldLayersCollide(
+                Constants.OBJECT_LAYER.ENTITY.getLayer(),
+                Constants.OBJECT_LAYER.COLLIDABLE_TERRAIN.getLayer(),
+                true);
 
-        this.gameObjects().layers().shouldLayersCollide(Layer.DEFAULT,
-                LOGS_LAYER, true);
-
-        // Making default objects (player)
+        // Making entities collide with logs
+        this.gameObjects().layers().shouldLayersCollide(
+                Constants.OBJECT_LAYER.ENTITY.getLayer(),
+                Constants.OBJECT_LAYER.LOG.getLayer(),
+                true);
     }
+
+
+    /**
+     * Asks the user whether they want to restart the game
+     */
+    private void restartGame() {
+        if (this.windowController.openYesNoDialog(YOU_LOST_MESSAGE)) {
+            this.windowController.resetGame();
+        } else {
+            this.windowController.closeWindow();
+        }
+    }
+
 
     public static void main(String[] args) {
         new PepseGameManager().run();

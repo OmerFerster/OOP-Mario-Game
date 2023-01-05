@@ -4,9 +4,8 @@ import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.util.Vector2;
+import pepse.util.Constants;
 import pepse.util.Pair;
-import pepse.world.entity.EntityManager;
-import pepse.world.trees.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +20,8 @@ public class InfiniteWorldManager {
 
     private final Map<Pair<Integer>, List<GameObject>> gameObjectsPerChunk;
 
-    private final Creator[] creators;
     private final GameObjectCollection gameObjects;
+    private final IWorldGenerator[] generators;
 
     private final int chunkWidth;
     private final int maxDistanceBeforeUpdated;
@@ -30,7 +29,7 @@ public class InfiniteWorldManager {
     private int minX, maxX;
 
     public InfiniteWorldManager(GameObjectCollection gameObjects, Vector2 windowDimensions,
-                                Creator... creators) {
+                                IWorldGenerator... generators) {
         // Checks the optimal chunks per window variable (starting from 5 down to 1)
         int CHUNKS_PER_WINDOW = 1;
 
@@ -43,8 +42,8 @@ public class InfiniteWorldManager {
 
         this.gameObjectsPerChunk = new HashMap<>();
 
-        this.creators = creators;
         this.gameObjects = gameObjects;
+        this.generators = generators;
 
         this.chunkWidth = (int) (windowDimensions.x() / CHUNKS_PER_WINDOW);
         this.maxDistanceBeforeUpdated = (int) (windowDimensions.x() - this.chunkWidth);
@@ -52,15 +51,20 @@ public class InfiniteWorldManager {
         this.minX = -this.chunkWidth;
         this.maxX = (int) (windowDimensions.x() + this.chunkWidth);
 
-        // Create initial world
-        for (int i = this.minX; i < this.maxX; i += this.chunkWidth) {
-            Pair<Integer> pair = new Pair<>(i, (i + this.chunkWidth));
+        this.initWorld();
+    }
+
+    /**
+     * Initializes the world by creating all initial chunks
+     */
+    private void initWorld() {
+        for (int x = this.minX; x < this.maxX; x += this.chunkWidth) {
+            Pair<Integer> pair = new Pair<>(x, (x + this.chunkWidth));
 
             List<GameObject> createdObjects = new ArrayList<>();
 
-            for (Creator creator : this.creators) {
-                createdObjects.addAll(creator.
-                        createInRangeAndReturn((int) Math.floor(i), (int) Math.ceil(i + this.chunkWidth)));
+            for (IWorldGenerator generator : this.generators) {
+                createdObjects.addAll(generator.createInRangeAndReturn(x, x + this.chunkWidth));
             }
 
             this.gameObjectsPerChunk.put(pair, createdObjects);
@@ -73,7 +77,7 @@ public class InfiniteWorldManager {
      *
      * @param currentX X location of the screen
      */
-    public void checkWorld(int currentX) {
+    public void checkWorld(int currentX) throws ChunkException {
         float distFromMinX = Math.abs(currentX - this.minX);
         float distFromMaxX = Math.abs(currentX - this.maxX);
 
@@ -104,27 +108,22 @@ public class InfiniteWorldManager {
      * @param toDelete Chunk to delete
      * @param toCreate Chunk to create
      */
-    private void updatedChunks(Pair<Integer> toDelete, Pair<Integer> toCreate) {
-        if (!this.gameObjectsPerChunk.containsKey(toDelete) ||
-                this.gameObjectsPerChunk.containsKey(toCreate)) {
-            // TODO remove prints form here.
-//            System.out.println("Failed to create");
-//            System.out.println("Creating " + toCreate.getA() + ", " + toCreate.getB());
-//            System.out.println("Deleting " + toDelete.getA() + ", " + toDelete.getB());
-//            System.out.println("=====");
-//            throw ChunkException();
-            return;
+    private void updatedChunks(Pair<Integer> toDelete, Pair<Integer> toCreate) throws ChunkException {
+        if (!this.gameObjectsPerChunk.containsKey(toDelete)) {
+            throw new ChunkException("An error occurred while trying to delete chunk: ("
+                    + toDelete.getA() + ", " + toDelete.getB() + ").\nChunk not found!");
         }
 
-//        System.out.println("Creating " + toCreate.getA() + ", " + toCreate.getB());
-//        System.out.println("Deleting " + toDelete.getA() + ", " + toDelete.getB());
-//        System.out.println("=====");
+        if(this.gameObjectsPerChunk.containsKey(toCreate)) {
+            throw new ChunkException("An error occurred while trying to create chunk: ("
+                    + toCreate.getA() + ", " + toCreate.getB() + ").\nChunk exists!");
+        }
 
         // Trying to remove all game objects in a chunk
-
         this.gameObjectsPerChunk.get(toDelete).stream().filter(Predicate.not(this::removeGameObject))
                 .forEach(failed -> System.out.println(
                         "[DEBUG] couldn't delete object of type " + failed.getTag()));
+
         // Flushing all removed game objects
         this.gameObjects.update(0);
 
@@ -132,10 +131,8 @@ public class InfiniteWorldManager {
 
         List<GameObject> createdObjects = new ArrayList<>();
 
-        for (Creator creator : this.creators) {
-            createdObjects.addAll(creator.
-                    createInRangeAndReturn(
-                            (int) Math.floor(toCreate.getA()), (int) Math.ceil(toCreate.getB())));
+        for (IWorldGenerator generator : this.generators) {
+            createdObjects.addAll(generator.createInRangeAndReturn(toCreate.getA(), toCreate.getB()));
         }
 
         this.gameObjectsPerChunk.put(toCreate, createdObjects);
@@ -148,10 +145,22 @@ public class InfiniteWorldManager {
      * @return Whether the removal was successful
      */
     private boolean removeGameObject(GameObject gameObject) {
-        return this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS) ||
-                this.gameObjects.removeGameObject(gameObject, Layer.STATIC_OBJECTS - 1) ||
-                this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND) ||
-                this.gameObjects.removeGameObject(gameObject, Layer.FOREGROUND + 1) ||
-                this.gameObjects.removeGameObject(gameObject);
+        for (Constants.OBJECT_LAYER objectLayer : Constants.OBJECT_LAYER.values()) {
+            if (this.gameObjects.removeGameObject(gameObject, objectLayer.getLayer())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * A static class for ChunkException
+     */
+    public static class ChunkException extends Exception {
+        public ChunkException(String message) {
+            super(message);
+        }
     }
 }

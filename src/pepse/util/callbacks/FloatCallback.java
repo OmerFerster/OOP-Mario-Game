@@ -1,4 +1,4 @@
-package pepse.util;
+package pepse.util.callbacks;
 
 /**
  * A callback for getting and returning float values.

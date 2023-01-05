@@ -6,7 +6,7 @@ import danogl.collisions.Layer;
 import danogl.components.CoordinateSpace;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
-import pepse.util.UIGameObjectCallback;
+import pepse.util.callbacks.UIGameObjectCallback;
 
 import java.awt.*;
 
@@ -14,6 +14,8 @@ import java.awt.*;
  * A class that handles a textual UI game object
  */
 public class TextualGameObject {
+
+    private static final String TAG = "ui_textual";
 
     /**
      * Creates a textual game object and returns it
@@ -34,6 +36,7 @@ public class TextualGameObject {
         GameObject textualGameObject = new GameObject(topLeftCornet, dimensions, textRenderable);
 
         textualGameObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+        textualGameObject.setTag(TAG);
 
         textualGameObject.addComponent(deltaTime -> callback.update(textualGameObject));
 

@@ -4,6 +4,7 @@ import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
+
 import pepse.util.ColorSupplier;
 import pepse.util.NoiseGenerator;
 import pepse.util.Utils;
@@ -15,13 +16,13 @@ import java.util.List;
 /**
  * A class that handles the creation of terrain within the game
  */
-public class Terrain implements Creator {
+public class Terrain implements IWorldGenerator {
 
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
 
     private static final int NOISE_SMOOTHNESS = 35;
-    private static final int TERRAIN_DEPTH = 20;
-    private static final int COLLIDABLE_DEPTH = 2; // How many layers of block should have collision
+    private static final int TERRAIN_DEPTH = 35;
+    private static final int COLLIDABLE_DEPTH = 2;
 
     private final GameObjectCollection gameObjects;
     private final Vector2 windowDimensions;
@@ -48,6 +49,7 @@ public class Terrain implements Creator {
         this.groundHeightAtX0 = ((float) 2 / 3) * windowDimensions.y();
     }
 
+
     /**
      * Returns the ground height at a certain point
      *
@@ -58,6 +60,7 @@ public class Terrain implements Creator {
         return this.groundHeightAtX0 +
                 Math.abs(this.noiseGenerator.noise(x / NOISE_SMOOTHNESS)) * this.groundHeightAtX0;
     }
+
 
     /**
      * Creates the ground terrain in a given range

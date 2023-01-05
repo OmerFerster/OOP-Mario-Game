@@ -3,7 +3,7 @@ package pepse.world.properties;
 /**
  * A class that represents a numeric property with current value, min, max and a change factor
  */
-public class NumericProperty implements Property<Double> {
+public class NumericProperty implements IProperty<Double> {
 
     private final double factor;
 
@@ -26,23 +26,69 @@ public class NumericProperty implements Property<Double> {
         return this.current;
     }
 
+    @Override
+    public void setValue(Double value) {
+        this.current = value;
+    }
+
+
+    /**
+     * Returns the property factor
+     *
+     * @return   Property factor
+     */
+    public double getFactor() {
+        return this.factor;
+    }
+
+    /**
+     * Returns the property max value
+     *
+     * @return   Property max value
+     */
     public double getMaxValue() {
         return this.max;
     }
 
+    /**
+     * Returns the property min value
+     *
+     * @return   Property min value
+     */
+    public double getMinValue() {
+        return this.min;
+    }
+
+
+    /**
+     * Increases the property by its factor
+     */
     public void increase() {
-        this.current = Math.min(this.current + this.factor, this.max);
+        this.increase(this.factor);
     }
 
-    public void increase(double number) {
-        this.current = Math.min(this.current + number, this.max);
+    /**
+     * Increases the property by the given factor
+     *
+     * @param factor   Factor to use for increment
+     */
+    public void increase(double factor) {
+        this.setValue(Math.min(this.current + factor, this.max));
     }
 
+    /**
+     * Decreases the property by its factor
+     */
     public void decrease() {
-        this.current = Math.max(this.current - this.factor, this.min);
+        this.decrease(this.factor);
     }
 
-    public void decrease(double number) {
-        this.current = Math.max(this.current - number, this.min);
+    /**
+     * Decreases the property by the given factor
+     *
+     * @param factor   Factor to use for decrement
+     */
+    public void decrease(double factor) {
+        this.setValue(Math.max(this.current - factor, this.min));
     }
 }

@@ -1,4 +1,4 @@
-package pepse.util;
+package pepse.util.callbacks;
 
 import danogl.GameObject;
 

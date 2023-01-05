@@ -8,8 +8,10 @@ import danogl.gui.UserInputListener;
 import danogl.gui.rendering.AnimationRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import pepse.world.entity.Animal;
-import pepse.world.entity.Pirate;
+import pepse.util.Constants;
+import pepse.world.entity.IDamagable;
+import pepse.world.entity.Entity;
+import pepse.world.entity.passive.IPassive;
 import pepse.world.properties.NumericProperty;
 import pepse.world.trees.Log;
 import pepse.world.ui.VisualGameObject;
@@ -17,33 +19,19 @@ import pepse.world.ui.VisualGameObject;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Avatar extends GameObject implements Damagable {
+/**
+ * This class represents an avatar - a playable character in the pepse game
+ * An avatar can be damaged.
+ */
+public class Avatar extends Entity {
 
-    public static final Vector2 AVATAR_SIZE = new Vector2(50, 60);
-
-    private static final int AVATAR_GRAVITY = 300;
-    private static final int AVATAR_SPEED = 300;
-
-    private static final int AVATAR_FLIGHT_SPEED = 150;
-
-    private static final double ENERGY_FACTOR = 0.5;
-    private static final double MAX_ENERGY = 100;
-    private static final double MIN_ENERGY = 0;
-    private static final double INITIAL_ENERGY = 100;
-
-    private static final double HEALTH_FACTOR = 0.5;
-    private static final double MAX_HEALTH = 100;
-    private static final double MIN_HEALTH = 0;
-    private static final double INITIAL_HEALTH = 100;
+    private static final Vector2 AVATAR_SIZE = new Vector2(50, 60);
 
     private static final String TAG = "avatar";
-    private static final String TAG_ENERGY = "avatarEnergy";
-    private static final String TAG_HEALTH = "avatarHealth";
 
     private final UserInputListener inputListener;
     private final NumericProperty energy;
-    private final NumericProperty health;
-    private final int ATTACKING_EVENT = KeyEvent.VK_A;
+
     private boolean isFlying;
     private boolean isAttacking;
 
@@ -53,26 +41,22 @@ public class Avatar extends GameObject implements Damagable {
     private Renderable runAnimation;
     private Renderable swimAnimation;
 
-    public Avatar(Vector2 topLeftCorner, Vector2 dimensions,
+    public Avatar(Vector2 bottomLeftCorner, Vector2 dimensions,
                   ImageReader imageReader, UserInputListener inputListener,
-                  NumericProperty energy, NumericProperty health) {
-        super(topLeftCorner, dimensions, null);
+                  NumericProperty energy) {
+        super(bottomLeftCorner.add(new Vector2(0, - AVATAR_SIZE.y())), dimensions, imageReader);
 
-        this.physics().preventIntersectionsFromDirection(Vector2.ZERO);
-        this.physics().setMass(1.0f);
-        this.transform().setAccelerationY(AVATAR_GRAVITY);
+        this.setTag(TAG);
 
         this.inputListener = inputListener;
         this.energy = energy;
-        this.health = health;
 
         this.isFlying = false;
         this.isAttacking = false;
 
-        this.initAnimations(imageReader);
-
         this.renderer().setRenderable(this.idleAnimation);
     }
+
 
     /**
      * Handles the tick-update of the avatar to handle movement, animations and energy
@@ -89,40 +73,31 @@ public class Avatar extends GameObject implements Damagable {
         super.update(deltaTime);
 
         this.handleMovementInput();
+        this.handleMiscInput();
         this.updateAnimations();
         this.handleEnergy();
     }
 
+
     /**
-     * Handles the avatar collision enter. We want to reset its velocity, so it doesn't get out of bounds
+     * Handles the avatar collision stay. We want to kill damagable entities for as long as we
+     * stay in collision with them.
      *
-     * @param other     The GameObject with which a collision occurred.
-     * @param collision Information regarding this collision.
-     *                  A reasonable elastic behavior can be achieved with:
-     *                  setVelocity(getVelocity().flipped(collision.getNormal()));
+     * @param other       The collision partner.
+     * @param collision   Information regarding this collision.
      */
-    @Override
-    public void onCollisionEnter(GameObject other, Collision collision) {
-        super.onCollisionEnter(other, collision);
-
-        if (other instanceof Block && !(other instanceof Log)) {
-            this.setVelocity(this.getVelocity().multY(0));
-        }
-    }
-
     @Override
     public void onCollisionStay(GameObject other, Collision collision) {
         super.onCollisionStay(other, collision);
-        if (other instanceof Pirate && isAttacking) {
-            Pirate pirate = (Pirate) other;
-            pirate.kill();
-        }
-        if (other instanceof Animal && isAttacking) {
-            Animal animal = (Animal) other;
-            animal.kill();
-            this.heal(HEALTH_FACTOR * 60);
+
+        if(other instanceof IDamagable && this.isAttacking) {
+            ((IDamagable) other).kill();
+
+            // If the entity killed was healable, heal the player with 30hp
+            this.heal((other instanceof IPassive ? super.getHealthProperty().getFactor() * 60 : 0));
         }
     }
+
 
     /**
      * Handles the movement input of the avatar
@@ -131,11 +106,11 @@ public class Avatar extends GameObject implements Damagable {
         Vector2 direction = new Vector2(0, this.getVelocity().y());
 
         if (inputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
-            direction = direction.add(Vector2.LEFT.mult(AVATAR_SPEED));
+            direction = direction.add(Vector2.LEFT.mult(Constants.AVATAR_SPEED));
         }
 
         if (inputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            direction = direction.add(Vector2.RIGHT.mult(AVATAR_SPEED));
+            direction = direction.add(Vector2.RIGHT.mult(Constants.AVATAR_SPEED));
         }
 
         this.isFlying = false;
@@ -143,24 +118,45 @@ public class Avatar extends GameObject implements Damagable {
         if (inputListener.isKeyPressed(KeyEvent.VK_SPACE)) {
             if (this.energy.getValue() > 0 && inputListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
                 this.isFlying = true;
-//                flyingSound.play();
-                direction = new Vector2(direction.x(), -1 * (float) AVATAR_FLIGHT_SPEED);
+                direction = new Vector2(direction.x(), -1 * (float) Constants.AVATAR_FLIGHT_SPEED);
             } else {
                 if (this.getVelocity().y() == 0) {
-                    direction = direction.add(new Vector2(0, -1 * (float) AVATAR_GRAVITY));
+                    direction = direction.add(new Vector2(0, -1 * (float) Constants.ENTITY_GRAVITY));
                 }
             }
         }
-
-        this.isAttacking = inputListener.isKeyPressed(ATTACKING_EVENT);
 
         this.setVelocity(direction);
     }
 
     /**
+     * Handles the misc input of the avatar
+     * For example: attacking
+     */
+    private void handleMiscInput() {
+        this.isAttacking = this.inputListener.isKeyPressed(Constants.AVATAR_ATTACK_KEY)
+                && !this.isFlying;
+    }
+
+    /**
+     * Handles the energy updates
+     */
+    private void handleEnergy() {
+        if (this.isFlying) {
+            this.energy.decrease();
+        } else {
+            if (this.getVelocity().y() == 0) {
+                this.energy.increase();
+            }
+        }
+    }
+
+
+    /**
      * Handles the avatar animation
      */
-    private void updateAnimations() {
+    @Override
+    protected void updateAnimations() {
         if (this.getVelocity().x() != 0) {
             this.renderer().setRenderable(this.runAnimation);
             this.renderer().setIsFlippedHorizontally(this.getVelocity().x() < 0);
@@ -185,24 +181,12 @@ public class Avatar extends GameObject implements Damagable {
     }
 
     /**
-     * Handles the energy updates
-     */
-    private void handleEnergy() {
-        if (this.isFlying) {
-            this.energy.decrease();
-        } else {
-            if (this.getVelocity().y() == 0) {
-                this.energy.increase();
-            }
-        }
-    }
-
-    /**
      * Initializes all animations
      *
      * @param imageReader Image reader
      */
-    private void initAnimations(ImageReader imageReader) {
+    @Override
+    protected void initAnimations(ImageReader imageReader) {
         this.initAttackAnimation(imageReader);
         this.initIdleAnimation(imageReader);
         this.initJumpAnimation(imageReader);
@@ -277,26 +261,6 @@ public class Avatar extends GameObject implements Damagable {
     }
 
     /**
-     * Damages the avatar by a factor
-     *
-     * @param damage Damage to deal to the avatar
-     */
-    @Override
-    public void damage(double damage) {
-        this.health.decrease(damage);
-    }
-
-    /**
-     * Heals the avatar by a factor
-     *
-     * @param heal Number to heal to the avatar
-     */
-    @Override
-    public void heal(double heal) {
-        this.health.increase(heal);
-    }
-
-    /**
      * Initializes the swim animation
      *
      * @param imageReader Image reader
@@ -314,99 +278,79 @@ public class Avatar extends GameObject implements Damagable {
         this.swimAnimation = new AnimationRenderable(swimAnimationRenderable, 0.2);
     }
 
-    /**
-     * Returns the avatar's health
-     *
-     * @return Avatar's health
-     */
-    @Override
-    public double getHealth() {
-        return this.health.getValue();
-    }
-
 
     /**
      * Creates a basic avatar and all follow items
      *
-     * @param gameObjects   Collection of game objects to add the avatar to
-     * @param layer         Avatar's layer
-     * @param topLeftCorner Top left corner of the avatar
-     * @param inputListener Input listener object
-     * @param imageReader   Image reader object
-     * @return Created avatar
+     * @param gameObjects      Collection of game objects to add the avatar to
+     * @param layer            Avatar's layer
+     * @param bottomLeftCorner Bottom left corner of the avatar
+     * @param inputListener    Input listener object
+     * @param imageReader      Image reader object
+     * @return                 Created avatar
      */
     public static Avatar create(GameObjectCollection gameObjects,
-                                int layer, Vector2 topLeftCorner,
+                                int layer, Vector2 bottomLeftCorner,
                                 UserInputListener inputListener,
                                 ImageReader imageReader) {
-        return create(gameObjects, layer, topLeftCorner, inputListener, imageReader,
+        return create(gameObjects, layer, bottomLeftCorner, inputListener, imageReader,
                 Vector2.ZERO);
     }
 
     /**
      * Creates an avatar and all follow items
      *
-     * @param gameObjects      Collection of game objects to add the avatar to
-     * @param layer            Avatar's layer
-     * @param topLeftCorner    Top left corner of the avatar
-     * @param inputListener    Input listener object
-     * @param imageReader      Image reader object
-     * @param windowDimensions Dimensions of the screen
-     * @return Created avatar
+     * @param gameObjects         Collection of game objects to add the avatar to
+     * @param layer               Avatar's layer
+     * @param bottomLeftCorner    Bottom left corner of the avatar
+     * @param inputListener       Input listener object
+     * @param imageReader         Image reader object
+     * @param windowDimensions    Dimensions of the screen
+     * @return                    Created avatar
      */
     public static Avatar create(GameObjectCollection gameObjects,
-                                int layer, Vector2 topLeftCorner,
+                                int layer, Vector2 bottomLeftCorner,
                                 UserInputListener inputListener,
                                 ImageReader imageReader,
                                 Vector2 windowDimensions) {
-        NumericProperty energy = new NumericProperty(ENERGY_FACTOR, MAX_ENERGY, MIN_ENERGY, INITIAL_ENERGY);
-        NumericProperty health = new NumericProperty(HEALTH_FACTOR, MAX_HEALTH, MIN_HEALTH, INITIAL_HEALTH);
+        // Creates the energy property for the avatar
+        NumericProperty energy = new NumericProperty(
+                Constants.ENTITY_ENERGY_FACTOR,
+                Constants.ENTITY_MAX_ENERGY,
+                Constants.ENTITY_MIN_ENERGY,
+                Constants.ENTITY_MAX_ENERGY);
 
-        // Creates the avatar
-        Avatar avatar = new Avatar(topLeftCorner, AVATAR_SIZE,
-                imageReader, inputListener, energy, health);
-
-        avatar.setTag(TAG);
+        // Creates the avatar and adds it to the game
+        Avatar avatar = new Avatar(bottomLeftCorner, AVATAR_SIZE, imageReader, inputListener, energy);
 
         gameObjects.addGameObject(avatar, layer);
 
+        // Creates the energy & health bars of the avatar
+        Vector2 energyBarPosition = new Vector2(50, windowDimensions.y() - 100 - Constants.BAR_HEIGHT);
+        Vector2 healthBarPosition = energyBarPosition.add(new Vector2(0, Constants.BAR_HEIGHT * 2));
 
-        final int UI_ELEMENT_SIZE = 200;
+        VisualGameObject.createVisualGameObject(gameObjects, energyBarPosition,
+                Vector2.ZERO, Color.YELLOW,
+                (gameObject) -> updateBar(gameObject, energyBarPosition, energy));
 
-        // Creates the energy renderer
-        Vector2 energyPosition = new Vector2(50,
-                windowDimensions.y() - 120);
-
-        GameObject energyObject = VisualGameObject.createVisualGameObject(gameObjects, energyPosition,
-                Vector2.ZERO, Color.YELLOW, Color.GRAY,
-
-                (gameObject) -> {
-                    gameObject.setDimensions(
-                            Vector2.ONES.multX(energy.getValue().floatValue() * 2)
-                                    .multY(20));
-
-                    gameObject.setTopLeftCorner(energyPosition);
-                });
-
-        energyObject.setTag(TAG_ENERGY);
-
-        // Creates the health renderer
-        Vector2 healthPosition = new Vector2(50,
-                windowDimensions.y() - 80);
-
-        GameObject healthObject = VisualGameObject.createVisualGameObject(gameObjects, healthPosition,
-                Vector2.ZERO, Color.RED, Color.GRAY,
-
-                (gameObject) -> {
-                    gameObject.setDimensions(
-                            Vector2.ONES.multX(health.getValue().floatValue() * 2)
-                                    .multY(20));
-
-                    gameObject.setTopLeftCorner(healthPosition);
-                });
-
-        healthObject.setTag(TAG_HEALTH);
+        VisualGameObject.createVisualGameObject(gameObjects, healthBarPosition,
+                Vector2.ZERO, Color.RED,
+                (gameObject) -> updateBar(gameObject, healthBarPosition, avatar.getHealthProperty()));
 
         return avatar;
+    }
+
+    /**
+     * Updates a progress bar attached to the given property
+     *
+     * @param gameObject   Bar to update
+     * @param position     Bar top left position
+     * @param property     Property to control bar fullness
+     */
+    private static void updateBar(GameObject gameObject, Vector2 position, NumericProperty property) {
+        gameObject.setDimensions(Vector2.ONES.multX(property.getValue().floatValue() * 2)
+                        .multY(Constants.BAR_HEIGHT));
+
+        gameObject.setTopLeftCorner(position);
     }
 }
