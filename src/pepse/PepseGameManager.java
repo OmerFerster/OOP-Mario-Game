@@ -146,7 +146,8 @@ public class PepseGameManager extends GameManager {
         float avatarX = this.windowDimensions.x() / 2;
         float avatarY = this.terrainGenerator.groundHeightAt(avatarX);
 
-        this.avatar = Avatar.create(this.gameObjects(), Layer.DEFAULT,
+        this.avatar = Avatar.create(this.gameObjects(),
+                Constants.OBJECT_LAYER.ENTITY.getLayer(),
                 new Vector2(avatarX, avatarY),
                 this.inputListener, this.imageReader, this.windowDimensions);
 
@@ -160,7 +161,8 @@ public class PepseGameManager extends GameManager {
      * Creates the entity manager to create entities across the world
      */
     private void createEntities() {
-        this.entityGenerator = new EntityManager(this.gameObjects(), Layer.DEFAULT,
+        this.entityGenerator = new EntityManager(this.gameObjects(),
+                Constants.OBJECT_LAYER.ENTITY.getLayer(),
                 this.avatar, this.imageReader, this.terrainGenerator::groundHeightAt);
     }
 

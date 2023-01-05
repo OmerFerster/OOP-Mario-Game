@@ -6,6 +6,7 @@ import danogl.collisions.Layer;
 import danogl.util.Vector2;
 import pepse.util.Constants;
 import pepse.util.Pair;
+import pepse.world.entity.IDamagable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -145,6 +146,12 @@ public class InfiniteWorldManager {
      * @return Whether the removal was successful
      */
     private boolean removeGameObject(GameObject gameObject) {
+        if(gameObject instanceof IDamagable) {
+            if(((IDamagable) gameObject).isDead()) {
+                return true;
+            }
+        }
+
         for (Constants.OBJECT_LAYER objectLayer : Constants.OBJECT_LAYER.values()) {
             if (this.gameObjects.removeGameObject(gameObject, objectLayer.getLayer())) {
                 return true;
