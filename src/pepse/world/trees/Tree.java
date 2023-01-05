@@ -70,6 +70,12 @@ public class Tree implements IWorldGenerator {
         maxX = Utils.round(maxX, Block.SIZE);
 
         for (int x = minX; x < maxX; x += Block.SIZE) {
+            // We don't want to create a tree around the middle
+            // of the screen to prevent issues with avatar
+            if(Math.abs(x - (windowDimensions.x() / 2)) < 100) {
+                continue;
+            }
+
             int chances = this.random.nextInt(15);
 
             if (chances == 0) {
