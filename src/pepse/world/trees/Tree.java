@@ -76,9 +76,7 @@ public class Tree implements IWorldGenerator {
                 continue;
             }
 
-            int chances = this.random.nextInt(15);
-
-            if (chances == 0) {
+            if (this.random.nextInt(Constants.TREE_SPAWN_RATE) == 0) {
                 this.createTree(createdObjects, x, this.random.nextInt(6) + 5);
 
                 x += 30; // Increasing x by another 30 so there can't be 2 trees next to each other
@@ -127,15 +125,13 @@ public class Tree implements IWorldGenerator {
 
         for (int i = startX; i < endX; i += Block.SIZE) {
             for (int j = startY; j < endY; j += Block.SIZE) {
-                if (this.random.nextInt(3) == 0) {
-                    continue;
+                if (this.random.nextInt(Constants.LEAF_SPAWN_RATE) == 0) {
+                    Leaf leaf = new Leaf(new Vector2(i, j));
+
+                    this.gameObjects.addGameObject(leaf, this.leavesLayer);
+
+                    createdObjects.add(leaf);
                 }
-
-                Leaf leaf = new Leaf(new Vector2(i, j));
-
-                this.gameObjects.addGameObject(leaf, this.leavesLayer);
-
-                createdObjects.add(leaf);
             }
         }
     }

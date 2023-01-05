@@ -41,6 +41,10 @@ public class Constants {
     public static final float LEAF_SIZE_TRANSITION_ENDING_VALUE = 0.95f;
     public static final float LEAF_TRANSITIONS_CYCLE_LENGTH = 0.4f;
 
+    public static final int TREE_SPAWN_RATE = 20;
+    public static final int LEAF_SPAWN_RATE = 2;
+
+
     // Entity & Avatar constants
     public static final int AVATAR_ATTACK_KEY = KeyEvent.VK_A;
     public static final int AVATAR_FLIGHT_SPEED = 150;
@@ -58,7 +62,7 @@ public class Constants {
     public static final double ENTITY_MAX_HEALTH = 100;
     public static final double ENTITY_MIN_HEALTH = 0;
 
-    public static final int ENTITY_SPAWN_RATE = 10;
+    public static final int ENTITY_SPAWN_RATE = 25;
 
     public static final int HOSTILE_ENTITY_ATTACK_DELAY = 500;
     public static final int AI_ENTITY_MOVE_DELAY = 250;
