@@ -19,7 +19,6 @@ public class Pirate extends AIEntity implements IHostile {
     public static final Vector2 PIRATE_SIZE = new Vector2(65, 80);
 
     private static final String TAG = "pirate";
-    private static final int FIX = 30;
 
     private final IDamagable target;
 
@@ -32,7 +31,7 @@ public class Pirate extends AIEntity implements IHostile {
     private Renderable attackAnimation;
 
     public Pirate(Vector2 bottomLeftCorner, ImageReader imageReader, IDamagable target) {
-        super(bottomLeftCorner.add(new Vector2(0, -PIRATE_SIZE.y() - FIX)), PIRATE_SIZE, imageReader);
+        super(bottomLeftCorner.add(new Vector2(0, - PIRATE_SIZE.y() * 2)), PIRATE_SIZE, imageReader);
 
         this.setTag(TAG);
 

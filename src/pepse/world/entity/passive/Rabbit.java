@@ -16,13 +16,12 @@ public class Rabbit extends AIEntity implements IPassive {
     private static final Vector2 RABBIT_SIZE = new Vector2(40, 60);
 
     private static final String TAG = "animal";
-    private static final int FIX = 30;
 
     private Renderable idleAnimation;
     private Renderable runAnimation;
 
     public Rabbit(Vector2 bottomLeftCorner, ImageReader imageReader) {
-        super(bottomLeftCorner.add(new Vector2(0, -RABBIT_SIZE.y() - FIX)), RABBIT_SIZE, imageReader);
+        super(bottomLeftCorner.add(new Vector2(0, - RABBIT_SIZE.y() * 2)), RABBIT_SIZE, imageReader);
 
         this.setTag(TAG);
     }

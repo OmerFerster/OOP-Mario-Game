@@ -21,7 +21,7 @@ public class Terrain implements IWorldGenerator {
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
 
     private static final int NOISE_SMOOTHNESS = 35;
-    private static final int TERRAIN_DEPTH = 35;
+    private static final int TERRAIN_DEPTH = 20;
     private static final int COLLIDABLE_DEPTH = 2;
 
     private final GameObjectCollection gameObjects;

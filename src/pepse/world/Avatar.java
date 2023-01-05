@@ -45,7 +45,7 @@ public class Avatar extends Entity {
     public Avatar(Vector2 bottomLeftCorner, Vector2 dimensions,
                   ImageReader imageReader, UserInputListener inputListener,
                   NumericProperty energy) {
-        super(bottomLeftCorner.add(new Vector2(0, -AVATAR_SIZE.y() - FIX)), dimensions, imageReader);
+        super(bottomLeftCorner.add(new Vector2(0, - AVATAR_SIZE.y() * 2)), dimensions, imageReader);
 
         this.setTag(TAG);
 

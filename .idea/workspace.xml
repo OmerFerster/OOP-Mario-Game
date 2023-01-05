@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b7705b4c-e74a-43ae-a748-3e35714f65cc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/FloatCallback.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Creator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Damagable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/Animal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/Pirate.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pepse/world/Avatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Avatar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Terrain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/hostile/Pirate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/hostile/Pirate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/passive/Rabbit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/passive/Rabbit.java" afterDir="false" />
     </list>
