@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="oop-exercise-5:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/oop_exercise_5_jar</output-path>
+    <root id="archive" name="oop-exercise-5.jar">
+      <element id="module-output" name="oop-exercise-5" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Exercise 3/libs/DanoGameLab/DanoGameLab.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
