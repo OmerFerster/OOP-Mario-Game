@@ -2,7 +2,6 @@ package pepse.world;
 
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
-import danogl.collisions.Layer;
 import danogl.util.Vector2;
 import pepse.util.Constants;
 import pepse.util.Pair;
@@ -122,7 +121,7 @@ public class InfiniteWorldManager {
 
         // Trying to remove all game objects in a chunk
         this.gameObjectsPerChunk.get(toDelete).stream().filter(Predicate.not(this::removeGameObject))
-                .forEach(failed -> System.out.println(
+                .forEach(failed -> System.err.println(
                         "[DEBUG] couldn't delete object of type " + failed.getTag()));
 
         // Flushing all removed game objects

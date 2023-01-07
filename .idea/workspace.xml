@@ -6,45 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="b7705b4c-e74a-43ae-a748-3e35714f65cc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/PepseGameManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/ColorSupplier.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/Constants$OBJECT_LAYER.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/Constants.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/NoiseGenerator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/Pair.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/Utils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/callbacks/FloatCallback.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/util/callbacks/UIGameObjectCallback.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Avatar.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Block.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/IWorldGenerator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/InfiniteWorldManager$ChunkException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/InfiniteWorldManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Sky.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/Terrain.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/daynight/Night.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/daynight/Sun.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/daynight/SunHalo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/Entity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/EntityManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/IDamagable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/ai/AIEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/hostile/IHostile.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/hostile/Pirate.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/passive/IPassive.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/entity/passive/Rabbit.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/properties/IProperty.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/properties/NumericProperty.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Leaf.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Log.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/trees/Tree.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/ui/TextualGameObject.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/oop-exercise-5/pepse/world/ui/VisualGameObject.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/Exercise5/NoiseGeneratorTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/oop-exercise-5/NoiseGeneratorTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/EntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/EntityManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/Before.png" beforeDir="false" afterPath="$PROJECT_DIR$/uml/uml_before.png" afterDir="false" />
+    </list>
+    <list id="41111393-0c27-452b-b824-ad001e596c11" name="Changes by Liel Amar" comment="">
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +28,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java">
+      <ranges>
+        <range start1="4" end1="5" start2="4" end2="4" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="124" end1="125" start2="123" end2="124" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+      </ranges>
+    </file>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -70,9 +44,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="pepse.world.properties" />
@@ -126,6 +109,9 @@
       <workItem from="1672876897190" duration="8235000" />
       <workItem from="1672911184892" duration="605000" />
       <workItem from="1672917155944" duration="497000" />
+      <workItem from="1673025938864" duration="80000" />
+      <workItem from="1673026643162" duration="57000" />
+      <workItem from="1673087725897" duration="551000" />
     </task>
     <servers />
   </component>
