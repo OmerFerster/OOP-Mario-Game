@@ -1,4 +1,4 @@
-package pepse.world.properties;
+package pepse.util.properties;
 
 /**
  * A class that represents a numeric property with current value, min, max and a change factor

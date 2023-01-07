@@ -1,6 +1,6 @@
 package pepse.world.entity;
 
-import pepse.world.properties.NumericProperty;
+import pepse.util.properties.NumericProperty;
 
 /**
  * An interface representing damagable entities

@@ -95,7 +95,7 @@ public class PepseGameManager extends GameManager {
             try {
                 this.infiniteWorldManager.checkWorld((int) this.avatar.getCenter().x());
             } catch(InfiniteWorldManager.ChunkException exception) {
-                System.err.println(exception.getMessage());
+                System.err.println("[DEBUG] " + exception.getMessage());
             }
         }
 
@@ -149,7 +149,7 @@ public class PepseGameManager extends GameManager {
         this.avatar = Avatar.create(this.gameObjects(),
                 Constants.OBJECT_LAYER.ENTITY.getLayer(),
                 new Vector2(avatarX, avatarY),
-                this.inputListener, this.imageReader, this.windowDimensions);
+                this.inputListener, this.imageReader);
 
         // Setting the camera to track the avatar
         this.setCamera(new Camera(this.avatar, Vector2.ZERO,

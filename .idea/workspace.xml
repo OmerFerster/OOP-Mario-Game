@@ -6,11 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="b7705b4c-e74a-43ae-a748-3e35714f65cc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/Before.png" beforeDir="false" afterPath="$PROJECT_DIR$/uml/uml_before.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README" beforeDir="false" afterPath="$PROJECT_DIR$/README" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/Avatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Avatar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/IDamagable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/IDamagable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/properties/IProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/properties/IProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/properties/NumericProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/util/properties/NumericProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/Final.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/src.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/uml_after.png" beforeDir="false" />
     </list>
     <list id="41111393-0c27-452b-b824-ad001e596c11" name="Changes by Liel Amar" comment="">
-      <change beforePath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/PepseGameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/Avatar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/Avatar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/entity/hostile/Pirate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/entity/hostile/Pirate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +33,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -29,10 +42,37 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/src/pepse/world/InfiniteWorldManager.java">
+    <file path="$PROJECT_DIR$/src/pepse/world/Avatar.java">
       <ranges>
-        <range start1="4" end1="5" start2="4" end2="4" changelist="41111393-0c27-452b-b824-ad001e596c11" />
-        <range start1="124" end1="125" start2="123" end2="124" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+        <range start1="14" end1="16" start2="14" end2="15" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+        <range start1="30" end1="31" start2="29" end2="29" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+        <range start1="83" end1="84" start2="81" end2="82" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+        <range start1="96" end1="97" start2="94" end2="95" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+        <range start1="296" end1="316" start2="294" end2="294" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="329" end1="330" start2="307" end2="308" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="332" end1="335" start2="310" end2="312" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="336" end1="339" start2="313" end2="316" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/pepse/world/ui/VisualGameObject.java">
+      <ranges>
+        <range start1="16" end1="17" start2="16" end2="17" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="19" end1="19" start2="19" end2="24" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="23" end1="28" start2="28" end2="29" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+        <range start1="30" end1="34" start2="31" end2="33" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="35" end1="36" start2="34" end2="36" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="43" end1="44" start2="43" end2="44" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/pepse/world/ui/TextualGameObject.java">
+      <ranges>
+        <range start1="15" end1="16" start2="15" end2="16" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="18" end1="18" start2="18" end2="24" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="22" end1="27" start2="28" end2="29" changelist="b7705b4c-e74a-43ae-a748-3e35714f65cc" />
+        <range start1="29" end1="32" start2="31" end2="32" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="33" end1="34" start2="33" end2="34" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="35" end1="36" start2="35" end2="37" changelist="41111393-0c27-452b-b824-ad001e596c11" />
+        <range start1="42" end1="43" start2="43" end2="44" changelist="41111393-0c27-452b-b824-ad001e596c11" />
       </ranges>
     </file>
   </component>
@@ -111,7 +151,7 @@
       <workItem from="1672917155944" duration="497000" />
       <workItem from="1673025938864" duration="80000" />
       <workItem from="1673026643162" duration="57000" />
-      <workItem from="1673087725897" duration="551000" />
+      <workItem from="1673087725897" duration="6228000" />
     </task>
     <servers />
   </component>

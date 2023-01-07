@@ -14,26 +14,26 @@ import java.awt.*;
 /**
  * A class that handles a visual UI game object
  */
-public class VisualGameObject {
+public class VisualGameObject extends UIGameObject {
 
     private static final String TAG = "ui_visual";
+
+    public VisualGameObject(GameObjectCollection gameObjects, Vector2 topLeftCornet, Vector2 dimensions,
+                            Color mainColor) {
+        super(gameObjects, topLeftCornet, dimensions, mainColor);
+    }
 
     /**
      * Creates a textual game object and returns it
      *
-     * @param gameObjects   Game objects collection to add the created object to
-     * @param topLeftCornet Top left corner to position the created object
-     * @param dimensions    Dimensions of the created object
-     * @param color         The color of the visual element
-     * @param callback      A callback used to update the object's renderable
+     * @param callback A callback used to update the object's renderable
      * @return Created textual ui object
      */
-    public static GameObject createVisualGameObject(
-            GameObjectCollection gameObjects, Vector2 topLeftCornet, Vector2 dimensions,
-            Color color, UIGameObjectCallback callback) {
-        RectangleRenderable renderable = new RectangleRenderable(color);
+    public GameObject create(UIGameObjectCallback callback) {
+        RectangleRenderable renderable = new RectangleRenderable(super.mainColor);
 
-        GameObject gameObject = new GameObject(topLeftCornet, dimensions, renderable);
+        GameObject gameObject = new GameObject(super.topLeftCorner, super.dimensions,
+                renderable);
 
         gameObject.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObject.setTag(TAG);
@@ -41,7 +41,7 @@ public class VisualGameObject {
         gameObject.addComponent(deltaTime -> callback.update(gameObject));
 
         // Adding the back game object first
-        gameObjects.addGameObject(gameObject, Layer.UI);
+        super.gameObjects.addGameObject(gameObject, Layer.UI);
 
         return gameObject;
     }

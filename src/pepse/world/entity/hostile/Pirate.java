@@ -39,7 +39,7 @@ public class Pirate extends AIEntity implements IHostile {
 
         this.isAttacking = false;
 
-        this.attackDelayLeft = 0;
+        this.attackDelayLeft = Constants.HOSTILE_ENTITY_ATTACK_DELAY;
     }
 
 

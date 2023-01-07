@@ -12,8 +12,7 @@ import pepse.util.Constants;
 import pepse.world.entity.IDamagable;
 import pepse.world.entity.Entity;
 import pepse.world.entity.passive.IPassive;
-import pepse.world.properties.NumericProperty;
-import pepse.world.trees.Log;
+import pepse.util.properties.NumericProperty;
 import pepse.world.ui.VisualGameObject;
 
 import java.awt.*;
@@ -28,7 +27,6 @@ public class Avatar extends Entity {
     private static final Vector2 AVATAR_SIZE = new Vector2(50, 60);
 
     private static final String TAG = "avatar";
-    private static final int FIX = 30;
 
     private final UserInputListener inputListener;
     private final NumericProperty energy;
@@ -81,7 +79,7 @@ public class Avatar extends Entity {
 
 
     /**
-     * Handles the avatar collision stay. We want to kill damagable entities for as long as we
+     * Handles the avatar collision stay. We want to kill damageable entities for as long as we
      * stay in collision with them.
      *
      * @param other     The collision partner.
@@ -94,7 +92,7 @@ public class Avatar extends Entity {
         if (other instanceof IDamagable && this.isAttacking) {
             ((IDamagable) other).kill();
 
-            // If the entity killed was healable, heal the player with 30hp
+            // If the entity killed was healeable, heal the player with 30hp
             this.heal((other instanceof IPassive ? super.getHealthProperty().getFactor() * 60 : 0));
         }
     }
@@ -294,26 +292,6 @@ public class Avatar extends Entity {
                                 int layer, Vector2 bottomLeftCorner,
                                 UserInputListener inputListener,
                                 ImageReader imageReader) {
-        return create(gameObjects, layer, bottomLeftCorner, inputListener, imageReader,
-                Vector2.ZERO);
-    }
-
-    /**
-     * Creates an avatar and all follow items
-     *
-     * @param gameObjects      Collection of game objects to add the avatar to
-     * @param layer            Avatar's layer
-     * @param bottomLeftCorner Bottom left corner of the avatar
-     * @param inputListener    Input listener object
-     * @param imageReader      Image reader object
-     * @param windowDimensions Dimensions of the screen
-     * @return Created avatar
-     */
-    public static Avatar create(GameObjectCollection gameObjects,
-                                int layer, Vector2 bottomLeftCorner,
-                                UserInputListener inputListener,
-                                ImageReader imageReader,
-                                Vector2 windowDimensions) {
         // Creates the energy property for the avatar
         NumericProperty energy = new NumericProperty(
                 Constants.ENTITY_ENERGY_FACTOR,
@@ -327,16 +305,15 @@ public class Avatar extends Entity {
         gameObjects.addGameObject(avatar, layer);
 
         // Creates the energy & health bars of the avatar
-        Vector2 energyBarPosition = new Vector2(50, windowDimensions.y() - 100 - Constants.BAR_HEIGHT);
+        Vector2 energyBarPosition = new Vector2(50, 50 + Constants.BAR_HEIGHT);
         Vector2 healthBarPosition = energyBarPosition.add(new Vector2(0, Constants.BAR_HEIGHT * 2));
 
-        VisualGameObject.createVisualGameObject(gameObjects, energyBarPosition,
-                Vector2.ZERO, Color.YELLOW,
-                (gameObject) -> updateBar(gameObject, energyBarPosition, energy));
+        new VisualGameObject(gameObjects, energyBarPosition, Vector2.ZERO, Color.YELLOW)
+                .create((gameObject) -> updateBar(gameObject, energyBarPosition, energy));
 
-        VisualGameObject.createVisualGameObject(gameObjects, healthBarPosition,
-                Vector2.ZERO, Color.RED,
-                (gameObject) -> updateBar(gameObject, healthBarPosition, avatar.getHealthProperty()));
+        new VisualGameObject(gameObjects, healthBarPosition, Vector2.ZERO, Color.RED)
+                .create((gameObject) -> updateBar(gameObject, healthBarPosition,
+                        avatar.getHealthProperty()));
 
         return avatar;
     }

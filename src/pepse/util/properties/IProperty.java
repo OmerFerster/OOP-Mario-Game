@@ -1,4 +1,4 @@
-package pepse.world.properties;
+package pepse.util.properties;
 
 public interface IProperty<T> {
 

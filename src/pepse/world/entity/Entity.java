@@ -7,7 +7,7 @@ import danogl.util.Vector2;
 
 import pepse.util.Constants;
 import pepse.world.Block;
-import pepse.world.properties.NumericProperty;
+import pepse.util.properties.NumericProperty;
 import pepse.world.trees.Log;
 
 import java.util.Random;
